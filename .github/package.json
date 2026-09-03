@@ -1,0 +1,8 @@
+{
+  "name": "claude-setup-ci",
+  "private": true,
+  "description": "CI tooling versions, kept here so Dependabot can update them",
+  "dependencies": {
+    "opencode-ai": "1.18.25"
+  }
+}

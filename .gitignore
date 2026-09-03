@@ -1,0 +1,9 @@
+# never commit real secrets; settings.template.json holds placeholders only
+settings.json
+*.local.json
+# CI installs these from the lockfile
+.github/node_modules/
+
+# skills/ is allowlisted: locally linked skills never ship by accident
+skills/*
+!skills/opencode-delegate/

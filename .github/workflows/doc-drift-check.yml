@@ -1,0 +1,97 @@
+# Weekly: read the current Claude Code docs and check this setup against them.
+# Opens one issue per run when drift is found, assigned to the repository owner.
+#
+# Provider: OpenCode Go plan, single model, via the opencode CLI.
+# Needs OPENCODE_GO_KEY as a repository secret (the "key" field of the opencode-go entry
+# in ~/.local/share/opencode/auth.json).
+name: doc-drift-check
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"   # Mondays 03:00 Europe/Istanbul, the same moment as every Dependabot run
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Model for this run. Prices are USD per 1M tokens, input/output."
+        type: choice
+        default: "opencode-go/gpt-5.6-luna ($0.20/$1.20)"
+        options:
+          - "opencode/mimo-v2.5-free (free)"
+          - "opencode-go/glm-5.3-flash ($0.08/$0.25)"
+          - "opencode-go/qwen3.8-flash ($0.15/$0.47)"
+          - "opencode-go/gpt-5.6-luna ($0.20/$1.20)"
+          - "opencode-go/minimax-m3 ($0.30/$1.20)"
+          - "opencode-go/deepseek-v4-pro ($0.66/$1.98)"
+          - "opencode-go/grok-4.6 ($2.00/$6.00)"
+
+permissions:
+  contents: read
+  issues: write
+
+# A manual run and the cron firing together would both collect prior issues before
+# either opens one, producing duplicate digests. Queueing them serializes that read.
+concurrency:
+  group: doc-drift-check
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Choice options carry the price as a suffix for the dispatch UI; only the
+      # first token is the model id. Cron runs have no input and get the default.
+      - name: Resolve model
+        env:
+          RAW: ${{ inputs.model }}
+        run: |
+          MODEL="${RAW%% *}"
+          echo "OPENCODE_MODEL=${MODEL:-opencode-go/gpt-5.6-luna}" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install opencode
+        run: .github/scripts/install_opencode.sh
+
+      - name: Write opencode credentials from the repository secret
+        env:
+          OPENCODE_GO_KEY: ${{ secrets.OPENCODE_GO_KEY }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/write_opencode_auth.py
+          opencode auth list
+
+      - name: Collect prior drift findings
+        id: prior
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/collect_prior_issues.sh
+
+      - name: Fetch Claude Code docs
+        if: steps.prior.outputs.skip != 'true'
+        run: .github/scripts/fetch_docs.sh
+
+      - name: Build the review prompt
+        if: steps.prior.outputs.skip != 'true'
+        run: |
+          python3 .github/scripts/build_prompt.py > /tmp/prompt.txt
+          wc -c /tmp/prompt.txt; cat /tmp/digest-meta.env
+
+      - name: Provider sanity probe
+        if: steps.prior.outputs.skip != 'true'
+        run: .github/scripts/probe_provider.sh
+
+      - name: Ask the model
+        if: steps.prior.outputs.skip != 'true'
+        id: review
+        run: .github/scripts/ask_model.sh
+
+      - name: Open assigned issue when drift is found
+        if: steps.prior.outputs.skip != 'true' && steps.review.outputs.drift == 'true'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          OPENCODE_MODEL: ${{ env.OPENCODE_MODEL }}
+          LATEST_VERSION: ${{ steps.review.outputs.LATEST_VERSION }}
+        with:
+          script: |
+            const open = require('./.github/scripts/open_drift_issue.js');
+            await open({ github, context, core });

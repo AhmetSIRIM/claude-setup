@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "kotlin-lsp@claude-plugins-official": true,
+    "firebase@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true,
+    "session-report@claude-plugins-official": true
+  },
+  "outputStyle": "concise",
+  "language": "tr",
+  "effortLevel": "high",
+  "askUserQuestionTimeout": "5m",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "verbose": true,
+  "preferredNotifChannel": "notifications_disabled",
+  "inputNeededNotifEnabled": false,
+  "agentPushNotifEnabled": false,
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-start-git-flow.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-start-doctor.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "EXAMPLE_SERVICE_API_TOKEN": "<real values live only in the local ~/.claude/settings.json, filled from your secret store; every key here becomes an environment variable in each session>"
+  },
+  "autoConnectIde": true,
+  "alwaysThinkingEnabled": true,
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/hooks/statusline.sh\""
+  }
+}
