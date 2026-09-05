@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- `rules/scripting.md`: shell stays inside the Google Shell Style Guide's boundary, Go
+  beyond it.
+
+### Hand steps
+- Install `go` and `shellcheck` on every machine.
+
 ## [0.1.0] - 2026-09-03
 
 ### Added
