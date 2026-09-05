@@ -5,6 +5,8 @@
 ### Added
 - `rules/scripting.md`: shell stays inside the Google Shell Style Guide's boundary, Go
   beyond it.
+- `rules/git.md`, "Every repository is versioned; a release is a changelog entry":
+  `CHANGELOG.md` is the single source of release notes.
 
 ### Hand steps
 - Install `go` and `shellcheck` on every machine.

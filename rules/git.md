@@ -48,6 +48,17 @@ here.
 
 Why: history is permanent and read by people who never saw the plan.
 
+## Every repository is versioned; a release is a changelog entry
+- Every repository ships versions unless stated otherwise or a special case applies.
+- Semantic Versioning is the default scheme.
+- A versioned repository keeps `CHANGELOG.md` in the Keep a Changelog format; that file
+  is the single source of release notes.
+
+Why: versions and a changelog carry a project through long-term use and maintenance;
+without them, what changed and what an upgrade needs is dug out of history each time.
+
+Source: Keep a Changelog (https://keepachangelog.com/en/1.1.0/).
+
 ## Write discipline
 - Every git write names its repository: `git -C <absolute path> ...`. The shell working
   directory resets between tool calls; with worktrees, two checkouts of the same
