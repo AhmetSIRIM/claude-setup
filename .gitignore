@@ -7,3 +7,6 @@ settings.json
 # skills/ is allowlisted: locally linked skills never ship by accident
 skills/*
 !skills/opencode-delegate/
+
+# IDE state (JetBrains); nothing in it is part of the setup
+.idea/
