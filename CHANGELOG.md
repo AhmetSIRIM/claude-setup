@@ -2,7 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+- `cmd/budget-check`: reads the Go plan usage windows before the weekly digest, the
+  repository's first Go tool (`go.mod` at the root).
+
+### Changed
+- `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
+  with the reset time in the job summary, instead of failing the run.
+
 ### Removed
+- `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
 - The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
   `env`.
 

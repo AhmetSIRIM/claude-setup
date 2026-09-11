@@ -24,6 +24,7 @@ identical across machines.
 | `hooks/*.sh` | symlinked as `~/.claude/hooks/`; wired via `hooks` and `statusLine` in settings |
 | `settings.template.json` | copy to `~/.claude/settings.json`, fill `env` |
 | `.github/workflows/doc-drift-check.yml` | weekly digest + breakage issue, assigned to the owner |
+| `cmd/*/`, `go.mod` | Go tools the workflows run with `go run ./cmd/<name>` |
 
 ## Why this layout
 
@@ -142,6 +143,10 @@ choices between files.
   GitHub send an e-mail. Nothing new and nothing broken means no issue.
 - Prior issues travel back into the prompt, so closing an issue as accepted keeps the
   same finding from coming back.
+- A `budget` job runs first: `cmd/budget-check` reads the Go plan's usage windows
+  (rolling, weekly, monthly). A rate-limited window marks the review job skipped,
+  with the reset time in the job summary; anything else wrong with the plan or the
+  key fails the run with the API's own message.
 - The model runs through the opencode CLI and is set in the workflow's `env`.
   `OPENCODE_GO_KEY` must exist as a repository secret: the `key` field of the
   `opencode-go` entry in the credential store `opencode auth login` writes

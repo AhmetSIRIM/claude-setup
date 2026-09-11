@@ -1,7 +1,8 @@
 # Weekly: read the current Claude Code docs and check this setup against them.
 # Opens one issue per run when drift is found, assigned to the repository owner.
 #
-# Provider: OpenCode Go plan, via the opencode CLI.
+# Provider: OpenCode Go plan, via the opencode CLI. A spent monthly limit marks the
+# review job skipped instead of failing the run.
 # Needs OPENCODE_GO_KEY as a repository secret (the "key" field of the opencode-go entry
 # in ~/.local/share/opencode/auth.json).
 name: doc-drift-check
@@ -24,7 +25,34 @@ concurrency:
   group: doc-drift-check
 
 jobs:
+  # The budget probe is its own job because a step cannot mark its own job skipped:
+  # a step can only fail the job or make later steps skip while the job stays green.
+  # Only a job-level `if:` yields the grey "skipped" state, so `check` keys off this
+  # job's output.
+  budget:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      skip: ${{ steps.budget.outputs.skip }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false   # no module dependencies, nothing to cache
+
+      # Reads the plan's usage windows: a rate-limited window skips the review,
+      # anything else wrong with the plan or the key fails here with the API's answer.
+      - name: Check the Go plan budget
+        id: budget
+        env:
+          OPENCODE_GO_KEY: ${{ secrets.OPENCODE_GO_KEY }}
+        run: go run ./cmd/budget-check
+
   check:
+    needs: budget
+    if: needs.budget.outputs.skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -56,10 +84,6 @@ jobs:
         run: |
           python3 .github/scripts/build_prompt.py > /tmp/prompt.txt
           wc -c /tmp/prompt.txt; cat /tmp/digest-meta.env
-
-      - name: Provider sanity probe
-        if: steps.prior.outputs.skip != 'true'
-        run: .github/scripts/probe_provider.sh
 
       - name: Ask the model
         if: steps.prior.outputs.skip != 'true'
