@@ -142,10 +142,9 @@ choices between files.
   GitHub send an e-mail. Nothing new and nothing broken means no issue.
 - Prior issues travel back into the prompt, so closing an issue as accepted keeps the
   same finding from coming back.
-- The model runs through the opencode CLI. `OPENCODE_GO_KEY` must exist as a
-  repository secret: the `key` field of the `opencode-go` entry in the credential
-  store `opencode auth login` writes (`~/.local/share/opencode/auth.json` on
-  macOS/Linux). The default model and per-run choices live in
-  the workflow's dispatch dropdown.
+- The model runs through the opencode CLI and is set in the workflow's `env`.
+  `OPENCODE_GO_KEY` must exist as a repository secret: the `key` field of the
+  `opencode-go` entry in the credential store `opencode auth login` writes
+  (`~/.local/share/opencode/auth.json` on macOS/Linux).
 - The CLI version is pinned in `.github/package.json` and the workflow actions to
   commit SHAs; Dependabot updates both weekly.

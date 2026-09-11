@@ -1,7 +1,7 @@
 # Weekly: read the current Claude Code docs and check this setup against them.
 # Opens one issue per run when drift is found, assigned to the repository owner.
 #
-# Provider: OpenCode Go plan, single model, via the opencode CLI.
+# Provider: OpenCode Go plan, via the opencode CLI.
 # Needs OPENCODE_GO_KEY as a repository secret (the "key" field of the opencode-go entry
 # in ~/.local/share/opencode/auth.json).
 name: doc-drift-check
@@ -10,19 +10,9 @@ on:
   schedule:
     - cron: "0 0 * * 1"   # Mondays 03:00 Europe/Istanbul, the same moment as every Dependabot run
   workflow_dispatch:
-    inputs:
-      model:
-        description: "Model for this run. Prices are USD per 1M tokens, input/output."
-        type: choice
-        default: "opencode-go/gpt-5.6-luna ($0.20/$1.20)"
-        options:
-          - "opencode/mimo-v2.5-free (free)"
-          - "opencode-go/glm-5.3-flash ($0.08/$0.25)"
-          - "opencode-go/qwen3.8-flash ($0.15/$0.47)"
-          - "opencode-go/gpt-5.6-luna ($0.20/$1.20)"
-          - "opencode-go/minimax-m3 ($0.30/$1.20)"
-          - "opencode-go/deepseek-v4-pro ($0.66/$1.98)"
-          - "opencode-go/grok-4.6 ($2.00/$6.00)"
+
+env:
+  OPENCODE_MODEL: opencode-go/gpt-5.6-luna
 
 permissions:
   contents: read
@@ -38,15 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      # Choice options carry the price as a suffix for the dispatch UI; only the
-      # first token is the model id. Cron runs have no input and get the default.
-      - name: Resolve model
-        env:
-          RAW: ${{ inputs.model }}
-        run: |
-          MODEL="${RAW%% *}"
-          echo "OPENCODE_MODEL=${MODEL:-opencode-go/gpt-5.6-luna}" >> "$GITHUB_ENV"
-
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install opencode

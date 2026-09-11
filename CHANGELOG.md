@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Removed
+- The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
+  `env`.
+
 ## [0.2.0] - 2026-09-06
 
 ### Added
