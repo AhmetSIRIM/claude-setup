@@ -59,6 +59,21 @@ without them, what changed and what an upgrade needs is dug out of history each 
 
 Source: Keep a Changelog (https://keepachangelog.com/en/1.1.0/).
 
+## A worktree is proposed, never entered unannounced
+Work happens in the checkout the user opened. A worktree is entered only when the user
+asks for one, or when Claude proposes it with the reason (parallel edits to the same
+repository, a long change the user wants kept off the working copy) and the user says
+yes. Where a repository's own settings keep automatic isolation on, the first message
+of the session says that a worktree was entered and where it lives.
+
+Why: a worktree opened without notice moves the work to a path the user's IDE does not
+show; nested inside the project, JetBrains reads it as a multi-root project and its
+Git integration breaks. The isolation is worth that cost only when the user knows it is
+there.
+
+Source: JetBrains, "Use Git worktrees" (avoid nesting a worktree inside the project
+directory); the proposal rule is the user's decision.
+
 ## Write discipline
 - Every git write names its repository: `git -C <absolute path> ...`. The shell working
   directory resets between tool calls; with worktrees, two checkouts of the same

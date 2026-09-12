@@ -7,6 +7,9 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "worktree": {
+    "bgIsolation": "none"
+  },
   "model": "opus[1m]",
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,

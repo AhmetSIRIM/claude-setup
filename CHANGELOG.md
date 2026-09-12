@@ -5,15 +5,22 @@
 ### Added
 - `cmd/budget-check`: reads the Go plan usage windows before the weekly digest, the
   repository's first Go tool (`go.mod` at the root).
+- `rules/git.md`, "A worktree is proposed, never entered unannounced".
 
 ### Changed
 - `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
   with the reset time in the job summary, instead of failing the run.
+- `settings.template.json`: `worktree.bgIsolation` is `none`; background sessions work
+  in the checkout unless a worktree is asked for.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
 - The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
   `env`.
+
+### Hand steps
+- Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every
+  machine (the template carries it for new installs).
 
 ## [0.2.0] - 2026-09-06
 
