@@ -152,4 +152,4 @@ choices between files.
   `opencode-go` entry in the credential store `opencode auth login` writes
   (`~/.local/share/opencode/auth.json` on macOS/Linux).
 - The CLI version is pinned in `.github/package.json` and the workflow actions to
-  commit SHAs; Dependabot updates both weekly.
+  commit SHAs; Dependabot updates both weekly and watches `go.mod`.

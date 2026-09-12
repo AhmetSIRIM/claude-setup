@@ -14,3 +14,10 @@ updates:
       day: monday
       time: "03:00"
       timezone: Europe/Istanbul
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: Europe/Istanbul
