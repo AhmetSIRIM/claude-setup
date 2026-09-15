@@ -5,7 +5,7 @@ Every session runs in one of three modes. `ask` is the default. The user switche
 the current session by naming it; a mode never carries over to the next session, never
 comes from a skill, and never comes from an approval given in a past conversation.
 
-| Mode   | Commit                                        | Push          | PR create / merge |
+| Mode   | Commit                                        | Push          | PR create / merge / release |
 |--------|-----------------------------------------------|---------------|-------------------|
 | `ask`  | ask for an explicit yes, in a separate turn   | ask           | ask               |
 | `plan` | tasks of the agreed plan commit without asking; anything outside the plan asks | ask | ask     |
@@ -13,15 +13,15 @@ comes from a skill, and never comes from an approval given in a past conversatio
 
 "Ask" means: show the final diff, message, files and target, then wait for a yes in the
 next turn. "Commit it" said while approving the approach is not that yes; the finished
-work is what gets approved. PR create and merge ask in every mode.
+work is what gets approved. PR create, merge, and release ask in every mode.
 
-Before any push or PR, in every mode, the controlling agent verifies first (tests, diff
-review, acceptance) and only then asks; an approval given before verification is
-uninformed.
+Before any push, PR, or release, in every mode, the controlling agent verifies first
+(tests, diff review, acceptance) and only then asks; an approval given before
+verification is uninformed.
 
 Why: each write is a review checkpoint, and the user decides per session how much of it
-to delegate. `free` exists for flows such as a push-triggered CI run; PR stays gated
-because it is the outward-facing, hard-to-undo step.
+to delegate. `free` exists for flows such as a push-triggered CI run; PR and release
+stay gated because they are the outward-facing, hard-to-undo steps.
 
 ## Cadence, when a plan exists
 - One atomic commit per plan task, after the user confirms understanding of that task.
