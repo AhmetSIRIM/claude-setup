@@ -53,6 +53,10 @@ Why: history is permanent and read by people who never saw the plan.
 - Semantic Versioning is the default scheme.
 - A versioned repository keeps `CHANGELOG.md` in the Keep a Changelog format; that file
   is the single source of release notes.
+- A release is the host's published release object (a GitHub Release or the host's
+  equivalent): tagged with the version, titled with the version, its body that version's
+  `CHANGELOG.md` section, cut from the changelog and never written the other way round.
+  A tag alone is not a release.
 
 Why: versions and a changelog carry a project through long-term use and maintenance;
 without them, what changed and what an upgrade needs is dug out of history each time.
