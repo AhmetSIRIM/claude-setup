@@ -5,6 +5,8 @@
 ### Added
 - `cmd/budget-check`: reads the Go plan usage windows before the weekly digest, the
   repository's first Go tool (`go.mod` at the root).
+- `skills/learn`: `/learn <topic>` sets a tutoring contract for the session; one source
+  at a time, the learner chooses how to work, Claude checks and gives graduated hints.
 - `rules/git.md`, "A worktree is proposed, never entered unannounced".
 - `rules/session-hygiene.md`, "A session carries one piece of work".
 
