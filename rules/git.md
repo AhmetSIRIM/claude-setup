@@ -48,15 +48,17 @@ here.
 
 Why: history is permanent and read by people who never saw the plan.
 
-## Every repository is versioned; a release is a changelog entry
+## Every repository is versioned; a release is a changelog entry published on the host
 - Every repository ships versions unless stated otherwise or a special case applies.
 - Semantic Versioning is the default scheme.
 - A versioned repository keeps `CHANGELOG.md` in the Keep a Changelog format; that file
   is the single source of release notes.
-- A release is the host's published release object (a GitHub Release or the host's
-  equivalent): tagged with the version, titled with the version, its body that version's
-  `CHANGELOG.md` section, cut from the changelog and never written the other way round.
-  A tag alone is not a release.
+- A release is the host's published release object (a GitHub Release, or what the host
+  offers in its place). It is tagged with the version, `vX.Y.Z` by default, and titled
+  the same; its body is that version's `CHANGELOG.md` section, copied as is. The
+  changelog section is written and committed first; release notes are never drafted on
+  the host and copied back. A tag alone is not a release. On a host with no release
+  object, ask the user what stands in for it before tagging.
 
 Why: versions and a changelog carry a project through long-term use and maintenance;
 without them, what changed and what an upgrade needs is dug out of history each time.

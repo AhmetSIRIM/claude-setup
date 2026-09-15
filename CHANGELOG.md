@@ -13,9 +13,10 @@
   with the reset time in the job summary, instead of failing the run.
 - `settings.template.json`: `worktree.bgIsolation` is `none`; background sessions work
   in the checkout unless a worktree is asked for.
-- `rules/git.md`: a release is the host's published release object, built from the
-  changelog; a tag alone is not one. Cutting a release asks in every git mode, like
-  PR create and merge.
+- `rules/git.md`: a release is the host's published release object, cut from a
+  changelog section written first; a tag alone is not one, and a host without a
+  release object gets asked. Cutting a release asks in every git mode, like PR create
+  and merge.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
