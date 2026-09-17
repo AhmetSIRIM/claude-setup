@@ -56,6 +56,7 @@
   },
   "autoConnectIde": true,
   "alwaysThinkingEnabled": true,
+  "showThinkingSummaries": true,
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/hooks/statusline.sh\""

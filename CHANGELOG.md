@@ -19,6 +19,8 @@
   changelog section written first; a tag alone is not one, and a host without a
   release object gets asked. Cutting a release asks in every git mode, like PR create
   and merge.
+- `settings.template.json`: `showThinkingSummaries` is on; thinking summaries show in
+  the transcript view.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
