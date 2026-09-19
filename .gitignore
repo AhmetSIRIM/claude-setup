@@ -11,3 +11,6 @@ skills/*
 
 # IDE state (JetBrains); nothing in it is part of the setup
 .idea/
+
+# go build ./cmd/<name> drops its binary here when run from the repository root
+/budget-check
