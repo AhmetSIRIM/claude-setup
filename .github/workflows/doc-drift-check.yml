@@ -3,8 +3,8 @@
 #
 # Provider: OpenCode Go plan, via the opencode CLI. A spent monthly limit marks the
 # review job skipped instead of failing the run.
-# Needs OPENCODE_GO_KEY as a repository secret (the "key" field of the opencode-go entry
-# in ~/.local/share/opencode/auth.json).
+# Needs OPENCODE_GO_KEY as a repository secret: an API key from the OpenCode console.
+# One key serves both the Zen and the Go provider.
 name: doc-drift-check
 
 on:

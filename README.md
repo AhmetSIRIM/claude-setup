@@ -148,8 +148,8 @@ choices between files.
   with the reset time in the job summary; anything else wrong with the plan or the
   key fails the run with the API's own message.
 - The model runs through the opencode CLI and is set in the workflow's `env`.
-  `OPENCODE_GO_KEY` must exist as a repository secret: the `key` field of the
-  `opencode-go` entry in the credential store `opencode auth login` writes
-  (`~/.local/share/opencode/auth.json` on macOS/Linux).
+  `OPENCODE_GO_KEY` must exist as a repository secret: an API key from the OpenCode
+  console. One key serves both the Zen and the Go provider; the workflow registers it
+  under `opencode-go` only.
 - The CLI version is pinned in `.github/package.json` and the workflow actions to
   commit SHAs; Dependabot updates both weekly and watches `go.mod`.

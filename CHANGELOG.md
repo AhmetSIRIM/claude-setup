@@ -26,6 +26,9 @@
   `opencode models` is the reachability source and depends on the account's console
   settings; `models.json` is the price source and lists models no credential reaches.
   The Zen and Go providers are separated, and the failure rows are keyed to symptoms.
+- `doc-drift-check.yml` and `README.md`: `OPENCODE_GO_KEY` is documented as an API key
+  from the OpenCode console, which serves both the Zen and the Go provider, instead of
+  a field of a credential file that exists only on one machine.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
