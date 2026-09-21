@@ -21,6 +21,11 @@
   and merge.
 - `settings.template.json`: `showThinkingSummaries` is on; thinking summaries show in
   the transcript view.
+- `skills/opencode-delegate`: the model table says how to recognize a tier (the `-free`
+  suffix, `cost.input`) instead of listing ids that go stale under the skill.
+  `opencode models` is the reachability source and depends on the account's console
+  settings; `models.json` is the price source and lists models no credential reaches.
+  The Zen and Go providers are separated, and the failure rows are keyed to symptoms.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
@@ -30,6 +35,8 @@
 ### Hand steps
 - Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every
   machine (the template carries it for new installs).
+- `opencode auth login -p opencode-go -m api` on every machine, with the OpenCode
+  console API key; a Zen credential alone does not reach `opencode-go/*`.
 
 ## [0.2.0] - 2026-09-06
 
