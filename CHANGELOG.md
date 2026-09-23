@@ -10,6 +10,8 @@
 - `rules/git.md`, "A worktree is proposed, never entered unannounced".
 - `rules/session-hygiene.md`, "A session carries one piece of work".
 - `tools/`: ccstatusline pinned with a lockfile, its config, and a Dependabot entry.
+- `README.md`, "New machine": the Terminal.app Option-as-Meta switch and agent
+  view as the opening screen, two preferences that live outside the repo.
 
 ### Changed
 - `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
@@ -51,6 +53,8 @@
   template and drop `effortLevel` in `~/.claude/settings.json`, on every machine.
 - `opencode auth login -p opencode-go -m api` on every machine, with the OpenCode
   console API key; a Zen credential alone does not reach `opencode-go/*`.
+- Terminal.app: "Use Option as Meta: Left Option only" on the default profile, and
+  agent view as the opening screen, on every machine (README, "New machine").
 
 ## [0.2.0] - 2026-09-06
 

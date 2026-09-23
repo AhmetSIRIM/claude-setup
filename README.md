@@ -152,6 +152,17 @@ choices between files.
    ```
 6. Open a new session: a silent `setup-doctor` means the install is complete; anything
    missing shows up as a warning.
+7. Two preferences live outside this repo and outside `settings.json`; set them by hand:
+   - Terminal.app, so that Option+Backspace deletes a word in the Claude Code prompt:
+     Settings > Profiles > the default profile > Keyboard > "Use Option as Meta: Left
+     Option only". The right Option key keeps producing accented characters.
+   - Agent view as the screen Claude Code opens on. The documented path is to start
+     with `claude agents` instead of `claude` (see the
+     [agent view doc](https://code.claude.com/docs/en/agent-view)). The undocumented
+     alternative is `"defaultToAgentsView": true` in `~/.claude.json`, Claude Code's
+     state file in the home directory, beside the `~/.claude` folder; an undocumented
+     key can change or disappear in any release, because that file is Claude Code's
+     own and not part of the settings contract.
 
 ## Weekly digest
 
