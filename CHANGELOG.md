@@ -29,6 +29,7 @@
 - `doc-drift-check.yml` and `README.md`: `OPENCODE_GO_KEY` is documented as an API key
   from the OpenCode console, which serves both the Zen and the Go provider, instead of
   a field of a credential file that exists only on one machine.
+- `settings.template.json`: `model` is `opus`, which runs with the 1M window natively.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
@@ -38,6 +39,7 @@
 ### Hand steps
 - Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every
   machine (the template carries it for new installs).
+- Set `"model": "opus"` in `~/.claude/settings.json` on every machine.
 - `opencode auth login -p opencode-go -m api` on every machine, with the OpenCode
   console API key; a Zen credential alone does not reach `opencode-go/*`.
 

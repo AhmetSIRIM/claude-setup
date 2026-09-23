@@ -10,7 +10,7 @@
   "worktree": {
     "bgIsolation": "none"
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
