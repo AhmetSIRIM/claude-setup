@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Session-start health check for this setup. Prints one warning line per problem
 # and stays completely silent when healthy, so a healthy session adds no context.
-# Catches configuration that breaks silently: an enabled code-intelligence plugin
-# whose language server binary is missing, a hook referenced by settings but absent
-# on disk, a broken ~/.claude symlink, and a pinned npm tool installed at another
-# version than its package.json names.
-# CLAUDE_DIR overrides the config directory (used by tests).
+# Catches configuration that breaks silently: a plugin enabled in settings but not
+# installed, an enabled code-intelligence plugin whose language server binary is
+# missing, a hook referenced by settings but absent on disk, a broken ~/.claude
+# symlink, a missing or unfilled ~/.claude/CLAUDE.md, and a pinned npm tool
+# installed at another version than its package.json names.
+# CLAUDE_DIR points the check at another config directory.
 if ! python3 -c 'pass' >/dev/null 2>&1; then
   echo "setup-doctor: python3 not usable; checks skipped"
   exit 0
