@@ -15,3 +15,4 @@ skills/*
 
 # go build ./cmd/<name> drops its binary here when run from the repository root
 /budget-check
+/announce-git-mode

@@ -40,11 +40,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-start-git-flow.sh"
-          },
+            "command": "~/.claude/hooks/session-start-doctor.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-start-doctor.sh"
+            "command": "~/go/bin/announce-git-mode"
           }
         ]
       }

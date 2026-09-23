@@ -5,6 +5,10 @@
 ### Added
 - `cmd/budget-check`: reads the Go plan usage windows before the weekly digest, the
   repository's first Go tool (`go.mod` at the root).
+- `cmd/announce-git-mode`: the git mode hook as a Go binary on UserPromptSubmit, the
+  event whose input carries `permission_mode` (SessionStart does not). It announces
+  the git mode when a session's permission mode is first seen and again when it
+  changes, with the autonomous-session warning when the mode is `bypassPermissions`.
 - `skills/learn`: `/learn <topic>` sets a tutoring contract for the session; one source
   at a time, the learner chooses how to work, Claude checks and gives graduated hints.
 - `rules/git.md`, "A worktree is proposed, never entered unannounced".
@@ -49,6 +53,7 @@
 - The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
   `env`.
 - `hooks/statusline.sh` and its license, replaced by ccstatusline.
+- `hooks/session-start-git-flow.sh`, replaced by `cmd/announce-git-mode`.
 - `effortLevel` from `settings.template.json`; Opus 5.5 and later ignore it.
 - Windows support: the junction, Git Bash and winget steps in the README, the release
   notice's Windows mention, and the doctor's search for a Windows python launcher. The
@@ -64,6 +69,10 @@
   console API key; a Zen credential alone does not reach `opencode-go/*`.
 - Terminal.app: "Use Option as Meta: Left Option only" on the default profile, and
   agent view as the opening screen, on every machine (README, "New machine").
+- `brew install go`, `go install ./cmd/announce-git-mode`, then in
+  `~/.claude/settings.json` drop the `session-start-git-flow.sh` entry and add a
+  `UserPromptSubmit` hook running `~/go/bin/announce-git-mode` (as in the template),
+  on every machine.
 
 ## [0.2.0] - 2026-09-06
 

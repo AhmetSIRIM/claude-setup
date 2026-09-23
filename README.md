@@ -25,7 +25,7 @@ identical across machines.
 | `tools/` | `npm ci --prefix tools`; `statusLine` in settings runs ccstatusline from here with `tools/ccstatusline.json` |
 | `settings.template.json` | copy to `~/.claude/settings.json`, fill `env` |
 | `.github/workflows/doc-drift-check.yml` | weekly digest + breakage issue, assigned to the owner |
-| `cmd/*/`, `go.mod` | Go tools the workflows run with `go run ./cmd/<name>` |
+| `cmd/*/`, `go.mod` | Go tools; a workflow runs one with `go run ./cmd/<name>`, a hook calls the binary `go install ./cmd/<name>` puts in `~/go/bin` |
 
 ## Why this layout
 
@@ -114,13 +114,15 @@ choices between files.
    ```
    The status line command names the clone at `$HOME/Projects/oss/claude-setup`; a
    clone anywhere else means editing that path in the copied settings.
-5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes),
-   then the pinned status line itself:
+5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes,
+   `go` builds the hook that names the git mode), then the pinned status line and the
+   hook binary:
    ```bash
-   brew install node gitleaks
+   brew install node gitleaks go
    ```
    ```bash
    npm ci --prefix tools
+   go install ./cmd/announce-git-mode
    ```
    Then create `.git/hooks/pre-push` (chmod +x) so outgoing commits are scanned
    before they reach the remote; fall back to a full scan while `origin/main` does
