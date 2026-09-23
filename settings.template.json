@@ -24,7 +24,6 @@
   },
   "outputStyle": "concise",
   "language": "tr",
-  "effortLevel": "high",
   "askUserQuestionTimeout": "5m",
   "voice": {
     "enabled": true,

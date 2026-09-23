@@ -38,13 +38,14 @@
 - The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
   `env`.
 - `hooks/statusline.sh`, replaced by ccstatusline.
+- `effortLevel` from `settings.template.json`; Opus 5.5 and later ignore it.
 
 ### Hand steps
 - Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every
   machine (the template carries it for new installs).
 - Set `"model": "opus"` in `~/.claude/settings.json` on every machine.
-- `npm ci --prefix tools`, then copy `statusLine` from the template into
-  `~/.claude/settings.json`, on every machine.
+- `npm ci --prefix tools`, then copy `statusLine` from the template and drop
+  `effortLevel` in `~/.claude/settings.json`, on every machine.
 - `opencode auth login -p opencode-go -m api` on every machine, with the OpenCode
   console API key; a Zen credential alone does not reach `opencode-go/*`.
 
