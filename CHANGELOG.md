@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-24
+
 ### Added
 - `cmd/budget-check`: reads the Go plan usage windows before the weekly digest, the
   repository's first Go tool (`go.mod` at the root).
@@ -91,6 +93,7 @@
 - Initial tracked setup: rules, skills, hooks, status line, and the weekly doc-drift
   digest.
 
-[Unreleased]: https://github.com/AhmetSIRIM/claude-setup/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/AhmetSIRIM/claude-setup/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/AhmetSIRIM/claude-setup/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AhmetSIRIM/claude-setup/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/AhmetSIRIM/claude-setup/releases/tag/v0.1.0
