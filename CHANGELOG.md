@@ -30,6 +30,7 @@
   from the OpenCode console, which serves both the Zen and the Go provider, instead of
   a field of a credential file that exists only on one machine.
 - `settings.template.json`: `model` is `opus`, which runs with the 1M window natively.
+- `hooks/statusline.sh`: vendored from a fork; the effort segment shows the live level.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.

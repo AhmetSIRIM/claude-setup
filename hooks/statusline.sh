@@ -1,9 +1,8 @@
 #!/bin/bash
-# Vendored from https://github.com/nilbuild/claude-statusline (bin/statusline.sh).
-# Copyright (c) 2026 Kamran Ahmed. Released under the MIT License; see the LICENSE file in
-# hooks/LICENSE-statusline next to this file for the full text. The setup carries its own copy so a clone works
-# without an installer step; update it by re-copying from upstream. Local change:
-# this header only.
+# Vendored from https://github.com/AhmetSIRIM/claude-statusline (bin/statusline.sh), a fork of
+# https://github.com/nilbuild/claude-statusline. Copyright (c) 2026 Kamran Ahmed. Released under
+# the MIT License; see hooks/LICENSE-statusline for the full text. The setup carries its own copy
+# so a clone works without an installer step; change the fork, then re-copy the file here.
 set -f
 
 input=$(cat)
@@ -129,11 +128,8 @@ else
     pct_used=0
 fi
 
-effort="default"
-settings_path="$HOME/.claude/settings.json"
-if [ -f "$settings_path" ]; then
-    effort=$(jq -r '.effortLevel // "default"' "$settings_path" 2>/dev/null)
-fi
+# Live session value; absent when the model does not support effort.
+effort=$(echo "$input" | jq -r '.effort.level // empty')
 
 # ── LINE 1: Model │ Context % │ Directory (branch) │ Session │ Effort ──
 pct_color=$(color_for_pct "$pct_used")
@@ -185,13 +181,17 @@ if [ -n "$session_duration" ]; then
     line1+="${sep}"
     line1+="${dim}⏱ ${reset}${white}${session_duration}${reset}"
 fi
-line1+="${sep}"
-case "$effort" in
-    high)   line1+="${magenta}● ${effort}${reset}" ;;
-    medium) line1+="${dim}◑ ${effort}${reset}" ;;
-    low)    line1+="${dim}◔ ${effort}${reset}" ;;
-    *)      line1+="${dim}◑ ${effort}${reset}" ;;
-esac
+if [ -n "$effort" ]; then
+    line1+="${sep}"
+    case "$effort" in
+        low)    line1+="${dim}○ ${effort}${reset}" ;;
+        medium) line1+="${dim}◔ ${effort}${reset}" ;;
+        high)   line1+="${magenta}◑ ${effort}${reset}" ;;
+        xhigh)  line1+="${magenta}◕ ${effort}${reset}" ;;
+        max)    line1+="${magenta}● ${effort}${reset}" ;;
+        *)      line1+="${dim}◌ ${effort}${reset}" ;;
+    esac
+fi
 
 # ── Rate limits from stdin (primary) ───────────────────
 has_stdin_rates=false
