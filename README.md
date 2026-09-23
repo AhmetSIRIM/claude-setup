@@ -146,6 +146,26 @@ choices between files.
      key can change or disappear in any release, because that file is Claude Code's
      own and not part of the settings contract.
 
+## A session without permission checks
+
+`bypassPermissions` joins the Shift+Tab mode cycle only when the session starts with
+it enabled; a running session cannot add it later (see the
+[permission modes doc](https://code.claude.com/docs/en/permission-modes)). Two flags:
+
+```bash
+claude --allow-dangerously-skip-permissions   # selectable in the cycle, not selected
+claude --dangerously-skip-permissions         # active from the first prompt
+```
+
+The first is the one to reach for: the session starts in the usual mode, and bypass
+sits one Shift+Tab past `plan` for the moment it is needed. Having bypass in the cycle
+has one side effect of its own: in that session `plan` no longer blocks an edit or a
+command Claude attempts while planning, so a planning session that must stay
+read-only starts without either flag. Neither flag belongs in a shell alias, and
+`permissions.defaultMode: "bypassPermissions"` does not belong in `settings.json`: with
+bypass in every cycle an extra Shift+Tab lands on it by accident, and in that mode
+writes to protected paths such as `.git` and `.claude` run without a prompt.
+
 ## Weekly digest
 
 `doc-drift-check.yml` runs every Monday and opens at most one issue.

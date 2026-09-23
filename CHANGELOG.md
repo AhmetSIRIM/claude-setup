@@ -12,6 +12,8 @@
 - `tools/`: ccstatusline pinned with a lockfile, its config, and a Dependabot entry.
 - `README.md`, "New machine": the Terminal.app Option-as-Meta switch and agent
   view as the opening screen, two preferences that live outside the repo.
+- `README.md`, "A session without permission checks": `bypassPermissions` enters the
+  mode cycle only at launch, and the `--allow-` flag puts it there without activating it.
 
 ### Changed
 - `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
