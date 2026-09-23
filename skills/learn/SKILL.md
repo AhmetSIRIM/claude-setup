@@ -81,8 +81,8 @@ Source: Roediger and Karpicke, "Test-Enhanced Learning" (Psychological Science, 
 a week after study, the group that reread a passage four times recalled 40 percent of
 it and the group that read it once and recalled it three times recalled 61 percent,
 while the rereading group was the most confident it would remember. The same authors
-put the boundary at tests that come soon after study and that the learner can perform
-well on.
+suspect the effect is strongest when tests come soon after study and the learner can
+perform well on them; they name that as a suspicion, not a finding of the study.
 
 ### 4. No judging pace by how smoothly the conversation flows
 Pace is judged by whether the learner can produce the next artifact (an explanation, a
