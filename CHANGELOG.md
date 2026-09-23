@@ -44,6 +44,9 @@
   `env`.
 - `hooks/statusline.sh` and its license, replaced by ccstatusline.
 - `effortLevel` from `settings.template.json`; Opus 5.5 and later ignore it.
+- Windows support: the junction, Git Bash and winget steps in the README, the release
+  notice's Windows mention, and the doctor's search for a Windows python launcher. The
+  setup targets macOS; the removed steps stay in history for a future port.
 
 ### Hand steps
 - Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every

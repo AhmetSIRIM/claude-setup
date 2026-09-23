@@ -102,15 +102,7 @@ choices between files.
    ```
 2. Link the always-loaded pieces:
    ```bash
-   # macOS / Linux
    for i in rules skills hooks; do ln -sfn "$PWD/$i" ~/.claude/$i; done
-   ```
-   ```bat
-   :: Windows (cmd): Git Bash's ln -s silently copies instead of linking.
-   :: Junctions link for real and need neither admin rights nor Developer Mode.
-   mklink /J "%USERPROFILE%\.claude\rules"  "<repo>\rules"
-   mklink /J "%USERPROFILE%\.claude\skills" "<repo>\skills"
-   mklink /J "%USERPROFILE%\.claude\hooks"  "<repo>\hooks"
    ```
 3. Copy the personal-instructions template and fill it in; it stays local:
    ```bash
@@ -120,22 +112,12 @@ choices between files.
    ```bash
    cp settings.template.json ~/.claude/settings.json
    ```
-   On Windows, hook commands also need an explicit interpreter, because bash is not
-   on PATH there:
-   `"C:/Program Files/Git/bin/bash.exe" "C:/Users/<user>/.claude/hooks/<hook>.sh"`.
-   The status line command stays as it is: Claude Code runs it through Git Bash,
-   which resolves `$HOME` and forward slashes. It names the clone at
-   `$HOME/Projects/oss/claude-setup`; a clone anywhere else means editing that path
-   in the copied settings.
+   The status line command names the clone at `$HOME/Projects/oss/claude-setup`; a
+   clone anywhere else means editing that path in the copied settings.
 5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes),
    then the pinned status line itself:
    ```bash
-   # macOS
    brew install node gitleaks
-   ```
-   ```bat
-   :: Windows
-   winget install OpenJS.NodeJS.LTS gitleaks.gitleaks
    ```
    ```bash
    npm ci --prefix tools

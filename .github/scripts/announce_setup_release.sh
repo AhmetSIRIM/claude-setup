@@ -13,9 +13,9 @@ if gh issue list --repo "$GITHUB_REPOSITORY" --state all \
   echo "already announced: $TAG"; exit 0
 fi
 
-body="Setup $TAG is released. Per machine (Mac and Windows):
+body="Setup $TAG is released. Per machine:
 
-- \`cd\` into the clone and \`git pull\` (links and junctions pick the changes up on their own);
+- \`cd\` into the clone and \`git pull\` (the links pick the changes up on their own);
 - open a new session: a silent setup-doctor means the machine is current;
 - skim the release notes for anything that needs a hand step (a new tool, a settings key).
 

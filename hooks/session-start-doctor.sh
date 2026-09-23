@@ -6,17 +6,11 @@
 # on disk, a broken ~/.claude symlink, and a pinned npm tool installed at another
 # version than its package.json names.
 # CLAUDE_DIR overrides the config directory (used by tests).
-# The interpreter is resolved by test-running each candidate, because on Windows a
-# python3 shim can exist on PATH and still refuse to run (the Store alias trap).
-PYTHON=""
-for candidate in python3 python "py -3"; do
-  if $candidate -c 'pass' >/dev/null 2>&1; then PYTHON="$candidate"; break; fi
-done
-if [ -z "$PYTHON" ]; then
-  echo "setup-doctor: no working python interpreter found; checks skipped"
+if ! python3 -c 'pass' >/dev/null 2>&1; then
+  echo "setup-doctor: python3 not usable; checks skipped"
   exit 0
 fi
-$PYTHON - <<'PY'
+python3 - <<'PY'
 import json, os, shutil, subprocess
 
 claude_dir = os.environ.get('CLAUDE_DIR', os.path.expanduser('~/.claude'))
