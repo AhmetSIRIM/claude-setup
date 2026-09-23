@@ -7,6 +7,13 @@ updates:
       day: monday
       time: "03:00"
       timezone: Europe/Istanbul
+  - package-ecosystem: npm
+    directory: /tools
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: Europe/Istanbul
   - package-ecosystem: github-actions
     directory: /
     schedule:

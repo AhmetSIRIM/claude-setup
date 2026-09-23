@@ -1,0 +1,8 @@
+{
+  "name": "claude-setup-tools",
+  "private": true,
+  "description": "Local tool versions, kept here so Dependabot can update them",
+  "dependencies": {
+    "ccstatusline": "2.2.30"
+  }
+}

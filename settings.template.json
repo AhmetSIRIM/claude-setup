@@ -59,6 +59,6 @@
   "showThinkingSummaries": true,
   "statusLine": {
     "type": "command",
-    "command": "bash \"$HOME/.claude/hooks/statusline.sh\""
+    "command": "\"$HOME/Projects/oss/claude-setup/tools/node_modules/.bin/ccstatusline\" --config \"$HOME/Projects/oss/claude-setup/tools/ccstatusline.json\""
   }
 }

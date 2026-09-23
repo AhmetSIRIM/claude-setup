@@ -9,6 +9,7 @@
   at a time, the learner chooses how to work, Claude checks and gives graduated hints.
 - `rules/git.md`, "A worktree is proposed, never entered unannounced".
 - `rules/session-hygiene.md`, "A session carries one piece of work".
+- `tools/`: ccstatusline pinned with a lockfile, its config, and a Dependabot entry.
 
 ### Changed
 - `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
@@ -30,17 +31,20 @@
   from the OpenCode console, which serves both the Zen and the Go provider, instead of
   a field of a credential file that exists only on one machine.
 - `settings.template.json`: `model` is `opus`, which runs with the 1M window natively.
-- `hooks/statusline.sh`: vendored from a fork; the effort segment shows the live level.
+- `settings.template.json`: the status line runs ccstatusline from `tools/`.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.
 - The model dropdown of `doc-drift-check.yml`; the model is set in the workflow's
   `env`.
+- `hooks/statusline.sh`, replaced by ccstatusline.
 
 ### Hand steps
 - Add `"worktree": {"bgIsolation": "none"}` to `~/.claude/settings.json` on every
   machine (the template carries it for new installs).
 - Set `"model": "opus"` in `~/.claude/settings.json` on every machine.
+- `npm ci --prefix tools`, then copy `statusLine` from the template into
+  `~/.claude/settings.json`, on every machine.
 - `opencode auth login -p opencode-go -m api` on every machine, with the OpenCode
   console API key; a Zen credential alone does not reach `opencode-go/*`.
 

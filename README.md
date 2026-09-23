@@ -21,7 +21,8 @@ identical across machines.
 | `CLAUDE.template.md` | copy to `~/.claude/CLAUDE.md`, fill; stays local |
 | `rules/*.md` | symlinked as `~/.claude/rules/`; `kotlin.md` carries `paths:` scoping |
 | `skills/*/SKILL.md` | symlinked as `~/.claude/skills/` |
-| `hooks/*.sh` | symlinked as `~/.claude/hooks/`; wired via `hooks` and `statusLine` in settings |
+| `hooks/*.sh` | symlinked as `~/.claude/hooks/`; wired via `hooks` in settings |
+| `tools/` | `npm ci --prefix tools`; `statusLine` in settings runs ccstatusline from here with `tools/ccstatusline.json` |
 | `settings.template.json` | copy to `~/.claude/settings.json`, fill `env` |
 | `.github/workflows/doc-drift-check.yml` | weekly digest + breakage issue, assigned to the owner |
 | `cmd/*/`, `go.mod` | Go tools the workflows run with `go run ./cmd/<name>` |
@@ -71,6 +72,16 @@ choices between files.
     `CLAUDE.template.md`; the filled copy lives at `~/.claude/CLAUDE.md` and nothing
     personal ships with the repo.
   - Accepted cost: that one file is not version-tracked.
+- **The status line is ccstatusline, pinned in `tools/`.**
+  - The [status line docs](https://code.claude.com/docs/en/statusline) point to
+    ccstatusline as a community project, and it is actively maintained and takes
+    outside contributions. A hand-kept script would have to track the stdin schema
+    alone.
+  - The version sits in `tools/package.json` with a lockfile instead of a global
+    install, so every machine runs the same version, the lockfile checks the package
+    hash, and Dependabot turns each new release into a pull request to review.
+  - Accepted cost: after a pull that changes `tools/`, each machine runs
+    `npm ci --prefix tools`.
 - **No secrets in the repo.**
   - `settings.template.json` shows the env pattern with one self-describing example
     key; real keys and values live only in the local `settings.json`.
@@ -105,17 +116,23 @@ choices between files.
    ```bash
    cp settings.template.json ~/.claude/settings.json
    ```
-   On Windows, hook and status-line commands also need an explicit interpreter,
-   because bash is not on PATH there:
+   On Windows, hook commands also need an explicit interpreter, because bash is not
+   on PATH there:
    `"C:/Program Files/Git/bin/bash.exe" "C:/Users/<user>/.claude/hooks/<hook>.sh"`.
-5. Tools the setup leans on (`jq` feeds the status line, `gitleaks` guards pushes):
+   The status line command stays as it is: Claude Code runs it through Git Bash,
+   which resolves `$HOME` and forward slashes.
+5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes),
+   then the pinned status line itself:
    ```bash
    # macOS
-   brew install jq gitleaks
+   brew install node gitleaks
    ```
    ```bat
    :: Windows
-   winget install jqlang.jq gitleaks.gitleaks
+   winget install OpenJS.NodeJS.LTS gitleaks.gitleaks
+   ```
+   ```bash
+   npm ci --prefix tools
    ```
    Then create `.git/hooks/pre-push` (chmod +x) so outgoing commits are scanned
    before they reach the remote; fall back to a full scan while `origin/main` does
@@ -152,4 +169,4 @@ choices between files.
   console. One key serves both the Zen and the Go provider; the workflow registers it
   under `opencode-go` only.
 - The CLI version is pinned in `.github/package.json` and the workflow actions to
-  commit SHAs; Dependabot updates both weekly and watches `go.mod`.
+  commit SHAs; Dependabot updates both weekly and watches `go.mod` and `tools/`.

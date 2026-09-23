@@ -1,0 +1,173 @@
+{
+  "version": 4,
+  "defaultPadding": " ",
+  "defaultPaddingSide": "right",
+  "lines": [
+    [
+      {
+        "id": "label-model",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Model:"
+      },
+      {
+        "id": "model",
+        "type": "model",
+        "color": "blue",
+        "rawValue": true
+      },
+      {
+        "id": "sep-1",
+        "type": "separator"
+      },
+      {
+        "id": "label-context",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Context:"
+      },
+      {
+        "id": "context",
+        "type": "context-percentage",
+        "color": "green",
+        "rawValue": true
+      },
+      {
+        "id": "sep-2",
+        "type": "separator"
+      },
+      {
+        "id": "label-cwd",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Dir:"
+      },
+      {
+        "id": "cwd",
+        "type": "current-working-dir",
+        "color": "cyan",
+        "rawValue": true,
+        "metadata": {
+          "segments": "2"
+        }
+      },
+      {
+        "id": "sep-git",
+        "type": "separator"
+      },
+      {
+        "id": "label-git",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Git:"
+      },
+      {
+        "id": "branch",
+        "type": "git-branch",
+        "color": "green",
+        "metadata": {
+          "hide": "no-git"
+        },
+        "rawValue": true
+      },
+      {
+        "id": "changes",
+        "type": "git-changes",
+        "color": "yellow",
+        "metadata": {
+          "hide": "no-git,zero"
+        }
+      },
+      {
+        "id": "sep-cache",
+        "type": "separator"
+      },
+      {
+        "id": "label-cache",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Cache:"
+      },
+      {
+        "id": "cache",
+        "type": "cache-timer",
+        "color": "brightBlack",
+        "metadata": {
+          "ttlSeconds": "3600",
+          "hide": "empty"
+        },
+        "rawValue": true
+      },
+      {
+        "id": "sep-4",
+        "type": "separator"
+      },
+      {
+        "id": "label-effort",
+        "type": "custom-text",
+        "color": "brightBlack",
+        "customText": "Effort:"
+      },
+      {
+        "id": "effort",
+        "type": "thinking-effort",
+        "color": "magenta",
+        "rawValue": true
+      }
+    ],
+    [
+      {
+        "id": "session-label",
+        "type": "custom-text",
+        "color": "white",
+        "customText": "Session"
+      },
+      {
+        "id": "session-usage",
+        "type": "session-usage",
+        "color": "white",
+        "metadata": {
+          "display": "progress-short"
+        },
+        "rawValue": true
+      },
+      {
+        "id": "session-reset",
+        "type": "reset-timer",
+        "color": "brightBlack",
+        "metadata": {
+          "absolute": "true",
+          "timezone": "Europe/Istanbul"
+        },
+        "rawValue": true
+      }
+    ],
+    [
+      {
+        "id": "weekly-label",
+        "type": "custom-text",
+        "color": "white",
+        "customText": "Weekly "
+      },
+      {
+        "id": "weekly-usage",
+        "type": "weekly-usage",
+        "color": "white",
+        "metadata": {
+          "display": "progress-short"
+        },
+        "rawValue": true
+      },
+      {
+        "id": "weekly-reset",
+        "type": "weekly-reset-timer",
+        "color": "brightBlack",
+        "metadata": {
+          "absolute": "true",
+          "timezone": "Europe/Istanbul"
+        },
+        "rawValue": true
+      }
+    ]
+  ]
+}
