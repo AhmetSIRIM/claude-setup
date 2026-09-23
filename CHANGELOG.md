@@ -14,6 +14,10 @@
   view as the opening screen, two preferences that live outside the repo.
 - `README.md`, "A session without permission checks": `bypassPermissions` enters the
   mode cycle only at launch, and the `--allow-` flag puts it there without activating it.
+- `rules/autonomous-session.md`: a session in `bypassPermissions` mode is an autonomous
+  run; git mode starts as `free`, no rule blocks on the user, and PR, merge and release
+  wait in the final report. The file overrides every ask in the other rules, so they
+  do not repeat the exception.
 
 ### Changed
 - `doc-drift-check.yml`: a rate-limited Go plan window marks the review job skipped,
