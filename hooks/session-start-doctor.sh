@@ -3,7 +3,8 @@
 # and stays completely silent when healthy, so a healthy session adds no context.
 # Catches configuration that breaks silently: an enabled code-intelligence plugin
 # whose language server binary is missing, a hook referenced by settings but absent
-# on disk, and a broken ~/.claude symlink.
+# on disk, a broken ~/.claude symlink, and a pinned npm tool installed at another
+# version than its package.json names.
 # CLAUDE_DIR overrides the config directory (used by tests).
 # The interpreter is resolved by test-running each candidate, because on Windows a
 # python3 shim can exist on PATH and still refuse to run (the Store alias trap).
@@ -110,6 +111,21 @@ if status_line.get('type') == 'command':
         expanded = os.path.expanduser(os.path.expandvars(token.strip('"\'')))
         if expanded.startswith('/') and not os.path.exists(expanded):
             warns.append(f'statusLine references a missing file: {token}')
+        elif '/node_modules/.bin/' in expanded:
+            # An npm tool installed from an older lockfile keeps running, so the pin
+            # only holds when the installed version is compared with package.json.
+            tools_dir, name = expanded.split('/node_modules/.bin/', 1)
+            try:
+                pinned = (json.load(open(os.path.join(tools_dir, 'package.json')))
+                          .get('dependencies') or {}).get(name, '')
+                installed = json.load(open(os.path.join(tools_dir, 'node_modules', name,
+                                                        'package.json'))).get('version', '')
+            except (OSError, ValueError) as e:
+                warns.append(f'could not compare the pinned {name} version: {e}')
+            else:
+                if pinned and installed and pinned.lstrip('^~=') != installed:
+                    warns.append(f'{name} {installed} is installed but {pinned} is pinned; '
+                                 f'run: npm ci --prefix {tools_dir}')
 
 for w in warns:
     print('setup-doctor:', w)

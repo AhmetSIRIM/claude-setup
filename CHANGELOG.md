@@ -30,8 +30,11 @@
 - `doc-drift-check.yml` and `README.md`: `OPENCODE_GO_KEY` is documented as an API key
   from the OpenCode console, which serves both the Zen and the Go provider, instead of
   a field of a credential file that exists only on one machine.
-- `settings.template.json`: `model` is `opus`, which runs with the 1M window natively.
+- `settings.template.json`: `model` is `opus`, which runs with the 1M window natively
+  on the Anthropic API.
 - `settings.template.json`: the status line runs ccstatusline from `tools/`.
+- `hooks/session-start-doctor.sh`: warns when the installed ccstatusline version
+  differs from the pin in `tools/package.json`.
 
 ### Removed
 - `.github/scripts/probe_provider.sh`, superseded by `cmd/budget-check`.

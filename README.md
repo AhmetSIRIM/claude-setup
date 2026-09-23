@@ -81,7 +81,11 @@ choices between files.
     install, so every machine runs the same version, the lockfile checks the package
     hash, and Dependabot turns each new release into a pull request to review.
   - Accepted cost: after a pull that changes `tools/`, each machine runs
-    `npm ci --prefix tools`.
+    `npm ci --prefix tools`; the doctor warns while the installed version differs
+    from the pin.
+  - Accepted risk: the weekly drift check does not read `tools/`. The stdin schema is
+    ccstatusline's to track, and each of its releases arrives as a Dependabot pull
+    request to review.
 - **No secrets in the repo.**
   - `settings.template.json` shows the env pattern with one self-describing example
     key; real keys and values live only in the local `settings.json`.
@@ -120,7 +124,9 @@ choices between files.
    on PATH there:
    `"C:/Program Files/Git/bin/bash.exe" "C:/Users/<user>/.claude/hooks/<hook>.sh"`.
    The status line command stays as it is: Claude Code runs it through Git Bash,
-   which resolves `$HOME` and forward slashes.
+   which resolves `$HOME` and forward slashes. It names the clone at
+   `$HOME/Projects/oss/claude-setup`; a clone anywhere else means editing that path
+   in the copied settings.
 5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes),
    then the pinned status line itself:
    ```bash
