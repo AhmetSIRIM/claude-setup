@@ -68,7 +68,8 @@
         "metadata": {
           "hide": "no-git"
         },
-        "rawValue": true
+        "rawValue": true,
+        "maxWidth": 50
       },
       {
         "id": "changes",
@@ -83,20 +84,13 @@
         "type": "separator"
       },
       {
-        "id": "label-cache",
-        "type": "custom-text",
-        "color": "brightBlack",
-        "customText": "Cache:"
-      },
-      {
         "id": "cache",
         "type": "cache-timer",
         "color": "brightBlack",
         "metadata": {
           "ttlSeconds": "3600",
           "hide": "empty"
-        },
-        "rawValue": true
+        }
       },
       {
         "id": "sep-4",
