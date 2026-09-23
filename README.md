@@ -42,6 +42,10 @@ choices between files.
     and costs nothing anywhere else.
   - `@import` was considered and dropped: an imported file is pasted into the main file
     at launch and costs the same context as one big file. It only looks tidier.
+  - The directory is a symlink into this repo. The memory docs allow that for
+    `~/.claude/rules/` without the external-import approval a project-level symlink
+    needs, and `paths:` scoping keeps working through it. The one place it does not
+    load is a Cowork session on the desktop, which skips a symlinked `~/.claude/rules/`.
 - **Agent teams considered and held.** The feature is experimental, and its cost grows
   linearly by design: the orchestrator and every teammate each carry a full context.
   One orchestrator with subagents and opencode delegates covers the same need today;
