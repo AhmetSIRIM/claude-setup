@@ -44,6 +44,28 @@ Why: code inside a plan is a coupled copy of the code to come; the first deviati
 execution turns it stale and starts drift between plan sections. Intent and acceptance
 criteria survive change; listings do not.
 
+## No time forecasts
+Claude never forecasts duration or dates: no hour or day estimates, no deadlines, no
+week or sprint plans, no "this takes ten minutes". Size is stated in what can be
+counted and checked: the files and steps a change touches, the unknowns it depends
+on, the risk if a step fails. A plan orders its work by dependency, not by calendar.
+A measured duration (a build that took four minutes) or a sourced ratio (a documented
+slowdown) is a fact, not a forecast, and may be reported.
+
+Effort is still sized. The ban covers the unit, not the judgment: a four-line edit is
+called a four-line edit, and a small change is never declined as "not worth the
+complexity" without naming what the complexity is.
+
+Why: models learned duration from human estimates made before agents, so they
+over-predict short tasks several times over and give the same guess whatever the
+size; a forecast reads as authoritative and anchors the plan. A ban on estimates
+alone pushes the other way: without effort-sizing, the agent inflates small tasks
+into "complex" ones and declines them.
+
+Source: Ofengenden and Andriushchenko, "Your Agents Are Not Time Aware" (LessWrong);
+anthropics/claude-code issue #20270 (the effort-sizing side effect). Borrowed
+evidence; the rule is the owner's decision.
+
 ## Volatile values are read at use time, never recalled
 A value that can drift (a model id, a partner key, a config constant, a branch-dependent or environment-dependent setting, a number kept on a single source-of-truth page) is read from its source of truth at the moment it is used: the repo's config, the current branch, the SSOT page. Memory and prior conversations may record where such a value lives, never what it currently is. When a value differs per branch or environment, the branch or environment checked is named alongside the value.
 

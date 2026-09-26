@@ -7,6 +7,9 @@
   the user's answer goes through `AskUserQuestion` with the recommended option first,
   so the axis the agent reasons on is visible and an unanswered question can
   auto-continue.
+- `rules/communication.md`, "No time forecasts": no duration, deadline, or calendar
+  estimates; size is stated in countable scope, and effort is still sized so small
+  changes are not declined as complex.
 
 ## [0.3.0] - 2026-09-24
 
