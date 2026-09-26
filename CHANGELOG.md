@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+- `rules/communication.md`, "Decisions are asked as choices": a decision that needs
+  the user's answer goes through `AskUserQuestion` with the recommended option first,
+  so the axis the agent reasons on is visible and an unanswered question can
+  auto-continue.
+
 ## [0.3.0] - 2026-09-24
 
 ### Added

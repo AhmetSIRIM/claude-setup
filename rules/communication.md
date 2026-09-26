@@ -23,6 +23,19 @@ requirements, and implementation details.
 Why: review depends on knowing exactly which parts followed instructions as-is and
 which parts were guessed.
 
+## Decisions are asked as choices
+A decision that needs the user's answer is asked with `AskUserQuestion`: the
+recommended option first, each option naming its trade-off in one sentence. A
+plain-text question is for an open request that does not fit into options.
+
+Why: the options show the axis the agent is reasoning on, so the user sees it and can
+accept, shift, or reframe it; the two models of the work stay in sync. With
+`askUserQuestionTimeout` set, an unanswered question lets the agent go on with its own
+judgment; a plain-text question holds the session until someone answers.
+
+Source: Claude Code docs, "Tools reference" (AskUserQuestion tool behavior; Question
+auto-continue timeout). The rule is the owner's decision on top of that mechanism.
+
 ## Plan files are scaffolds
 A plan holds intent, decisions, and acceptance criteria; no code listings. Deviate
 consciously when execution surfaces better options; never silently.
