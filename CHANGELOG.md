@@ -3,6 +3,11 @@
 ## [Unreleased]
 
 ### Added
+- `skills/driving-apps-with-maestro`: rules for driving a mobile app with Maestro on a
+  simulator; reading the screen tree, selector semantics (including a `$` in an `id`),
+  waiting, commands that pass without doing anything, iOS traps, running flows, driver
+  processes left behind even after passing runs, the MCP and CLI split, and a simulator
+  window the user can watch by default.
 - `rules/communication.md`, "Decisions are asked as choices": a decision that needs
   the user's answer goes through `AskUserQuestion` with the recommended option first,
   so the axis the agent reasons on is visible and an unanswered question can

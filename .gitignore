@@ -9,6 +9,7 @@ tools/node_modules/
 skills/*
 !skills/opencode-delegate/
 !skills/learn/
+!skills/driving-apps-with-maestro/
 
 # IDE state (JetBrains); nothing in it is part of the setup
 .idea/
