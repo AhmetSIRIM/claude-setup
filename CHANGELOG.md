@@ -16,6 +16,12 @@
   estimates; size is stated in countable scope, and effort is still sized so small
   changes are not declined as complex.
 
+### Fixed
+- `cmd/announce-git-mode`: the per-session state lives under
+  `claude-setup.announce-git-mode` in the temp dir. A file named plain
+  `announce-git-mode` there made every state write fail with "not a directory", and the
+  git mode line repeated on every prompt.
+
 ## [0.3.0] - 2026-09-24
 
 ### Added

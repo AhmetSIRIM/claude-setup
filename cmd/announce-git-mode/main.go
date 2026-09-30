@@ -43,7 +43,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	statePath := filepath.Join(os.TempDir(), "announce-git-mode", input.SessionID)
+	// Qualified with the repository name: the shared temp dir can hold a file named like the binary.
+	statePath := filepath.Join(os.TempDir(), "claude-setup.announce-git-mode", input.SessionID)
 	previousMode, seenBefore, stateErr := readState(statePath)
 	line, announce := announcement(previousMode, seenBefore, input.PermissionMode)
 	if stateErr == nil {
