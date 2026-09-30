@@ -17,7 +17,8 @@ same as what you infer from a screenshot. Pull the tree before you write a selec
 **Second principle:** a passing step does not mean the work happened. Some Maestro commands
 return success without doing anything (see "Silent failures").
 
-The general rules hold on both platforms; the trap tables below are verified on iOS.
+The general rules hold on both platforms; the trap tables and the driver and process sections
+are verified on iOS only.
 
 ## Install and version
 
@@ -54,9 +55,13 @@ the second is an unrelated project.
 maestro hierarchy --no-reinstall-driver --compact
 ```
 
-With `--no-reinstall-driver`, Maestro reuses the running XCUITest driver. Without it, every call
-installs the driver and removes it when the session ends, which makes each call many times
-slower. For an agent that pulls the tree again and again, the flag matters.
+With `--no-reinstall-driver`, Maestro does not remove the XCUITest driver when the command ends,
+and the next command reuses it if a driver already answers on the port it connects to.
+`maestro hierarchy` connects to the fixed default port (22087), so repeated calls share one
+driver; without the flag, every call installs the driver and removes it again, which makes each
+call many times slower. `maestro test` is different: it picks a free port on every run (unless
+the hidden `--driver-host-port` option fixes one), so each run starts a new driver and the flag
+only leaves the old one running; see "Orphaned drivers".
 
 `--compact` prints CSV (`element_num,depth,attributes,parent_num`) and drops empty and `false`
 attributes. It is the right choice for an agent's context; the default JSON is much longer.
@@ -83,15 +88,16 @@ written inside this output (`takeScreenshot/`), not to the working directory.
 matches `step 1 OF 3`, while `text: "Step 1"` does not match it. For a partial match, say so:
 `text: ".*Step 1.*"`. Line breaks in the text become spaces before matching.
 
-Regex special characters (`(`, `?`, `+`, `.`): written as the full text they still match,
-because a literal equality check also runs. Inside a partial pattern, escape them
-(`.*\(3\).*`).
+Regex special characters (`(`, `?`, `+`, `.`) in a `text` selector: written as the full text
+they still match, because the `text` match also runs a literal equality check. Inside a
+partial pattern, escape them (`.*\(3\).*`).
 
-A `$` in an `id` is the exception to watch. `id` is a regex too, and `$` is the end-of-string
-anchor, so `id: "paywall.plan.$rc_monthly"` can never match: it asks for more characters after
-the end. On iOS it failed with "element not found" while an element carried exactly that
-identifier, so the literal check did not rescue it. The docs say to escape `$` with a backslash
-(`\$`); simpler still, keep `$` out of accessibility identifiers. It is not a variable: flow
+`id` has no literal check; it is a regex only. A special character in an identifier therefore
+changes what the selector means. The common trap is `$`, the end-of-string anchor:
+`id: "paywall.plan.$rc_monthly"` can never match, because it asks for more characters after
+the end, and the step fails with "element not found" even when an element carries exactly that
+identifier. Escape such characters with a backslash (`\$`, `\(`); simpler still, keep them out
+of accessibility identifiers. It is not a variable: flow
 interpolation needs braces (`${NAME}`), and a bare `$name` is left as written.
 
 `accessibilityText` is **not** a selector; it is one of the fields the `text` selector scans
@@ -143,11 +149,11 @@ These return success but did not do the work. Check the outcome of each one sepa
 | Command | Silent behavior | Countermeasure |
 |---|---|---|
 | `back` (iOS) | A no-op in the iOS driver; the step reports success and nothing happens | `tapOn` the back button in the navigation bar, then `assertVisible` an element of the previous screen |
-| `tapOn` (tab bar and similar) | On iOS the tap reports success but no navigation happens. Maestro pressed a child view that does not take taps (upstream issue #2448). The tree can also keep the views of tabs that are not on screen, so an `assertVisible` of a common element can pass on the wrong tab | After every navigation tap, `assertVisible` an element only the target screen draws, or check a screenshot |
+| `tapOn` (tab bar and similar) | On iOS the tap reports success but no navigation happens. One suspected cause is a press on a child view that does not take taps; upstream issue #2448 has not settled the cause. The tree can also keep the views of tabs that are not on screen, so an `assertVisible` of a common element can pass on the wrong tab | After every navigation tap, `assertVisible` an element only the target screen draws (a title or a row, never the tab's own label, which is on screen from every tab), or check a screenshot |
 | `hideKeyboard` (iOS) | There is no native API; it tries two small swipes near the center of the screen. It does not fail if the keyboard stays open, and the swipes can scroll content | `tapOn` an empty area, then check that the keyboard is gone |
 | `waitForAnimationToEnd` | Does **not fail** when the timeout runs out; it counts as success and moves on | Wait for a concrete element instead. With an endless animation (shimmer, an auto-rotating banner) this command always runs into its timeout |
 | `takeScreenshot` | Called with an undefined variable, it raises no error and writes `undefined.png` | Give a fixed file name |
-| `scrollUntilVisible` | Visibility is the element's area clipped to the screen bounds; a tab bar or keyboard covering it is ignored. A covered element counts as "fully visible" and scrolling stops. Also, any `visibilityPercentage` below 100 acts as 0 in practice (integer division) | Leave `visibilityPercentage` at its default (100); add `centerElement: true` when needed; then `tapOn` the element and check the result. Under a floating tab bar the `tapOn` lands on the tab instead of the row: swipe the row clear first, or tap with `below`/`above` |
+| `scrollUntilVisible` | Visibility is the element's area clipped to the screen bounds; a tab bar or keyboard covering it is ignored. A covered element counts as "fully visible" and scrolling stops. Also, any `visibilityPercentage` below 100 acts as 0 in practice (integer division) | Leave `visibilityPercentage` at its default (100); add `centerElement: true` when needed; then `tapOn` the element and check the result. Under a floating tab bar the `tapOn` lands on the tab instead of the row: `tapOn` always taps the center of the element it selects, and a relational selector (`above`, `below`) changes only which element is selected, not where the tap lands. Swipe the row clear of the bar first, or tap a point inside the row that the bar does not cover (`tapOn: {id: <row id>, point: "50%,20%"}`) |
 
 ## iOS-specific behavior
 
@@ -162,8 +168,9 @@ These return success but did not do the work. Check the outcome of each one sepa
   app's.
 - `launchApp` without parameters restarts the app (`stopApp` defaults to `true`). To bring a
   backgrounded app to the front, use `stopApp: false`.
-- `maestro hierarchy` takes an XCTest snapshot, which can stall while the main thread is busy,
-  for example on a screen with a live map (upstream issue #1967). Run it under a time limit
+- `maestro hierarchy` takes an XCTest snapshot, which can stall while the main thread is busy
+  (upstream issue #1967: the hierarchy request fails with "main thread busy for 30.0s"), for
+  example on a screen with a live map. Run it under a time limit
   (`perl -e 'alarm 120; exec @ARGV' maestro hierarchy`) and use screenshots on such screens.
 - On a map, a `swipe` with a long `duration` can act as a press and not pan; a short one (about
   300 ms) pans. The threshold is observed, not documented.
@@ -194,6 +201,17 @@ skipping the step is truly acceptable, and check the expected state in the next 
 
 ## Running flows
 
+A flow file is a config header, a `---` line, then a list of commands. `commands:` is not a
+top-level key; it only nests inside commands such as `runFlow`, `repeat`, and `retry`.
+
+```yaml
+appId: com.example.app
+---
+- launchApp
+- assertVisible:
+    id: home.title
+```
+
 **The default is to run the directory with one command** (`maestro test flows/`): the driver is
 installed once and the flows run in the same session. In a directory run, flow order is **not
 alphabetical and not defined**; when order matters, write `executionOrder.flowsOrder` in
@@ -203,18 +221,19 @@ Keep subflows shared through `runFlow` (such as login) outside the directory you
 example `shared/` next to `flows/`); otherwise the directory run also runs them as standalone tests.
 
 **If the driver dies in batch mode.** There are reports of the driver going unresponsive after a
-few flows on the iOS 26 runtime, with `Failed to connect to 127.0.0.1:22087` (upstream issues
-#3254, #3318). A bot closed both for missing information, and the maintainers doubt the problem
-is general. If you hit this error, run each flow in its own process and reuse the driver across
-processes with `--no-reinstall-driver`. Save the snippet as a script file; pasted into an
-interactive shell, `exit` closes the shell:
+few flows on the iOS 26 runtime, with `Failed to connect to 127.0.0.1:<port>` (upstream issues
+#3254, #3318). Both are closed without a confirmed cause, so treat this as a possible failure,
+not a known one. If you hit this error, run each flow in its own process, so each one starts a fresh driver.
+Leave `--no-reinstall-driver` out here: each `maestro test` picks a new port, so the flag
+reuses nothing and only leaves one driver behind per flow. Save the snippet as a script file;
+pasted into an interactive shell, `exit` closes the shell:
 
 ```bash
 #!/bin/bash
 rc=0
 for f in flows/*.yaml flows/*.yml; do
   [[ -e "$f" ]] || continue
-  maestro test --no-reinstall-driver "$f" || { echo "FAILED: $f"; rc=1; }
+  maestro test "$f" || { echo "FAILED: $f"; rc=1; }
 done
 exit "$rc"
 ```
@@ -234,21 +253,29 @@ the view they were watching.
 
 **Orphaned drivers.** On Xcode 26 and later, a driver session that fails or is killed can leave
 its `xcodebuild test-without-building` process and a `simctl diagnose` behind, and the diagnose
-can run for about ten minutes (upstream issue #3633). With `--no-reinstall-driver`, check for them
-after each flow run (`pgrep -fl "simctl diagnose"`) and end the older ones, but never the live
-driver: killing it makes the next command hang. In a wait loop, use `pgrep -x <name>` or wait on
-a PID; `pgrep -f <pattern>` matches the loop's own shell, and the loop never ends.
+can run until its own `--timeout` (upstream issue #3633). Never end a driver while a Maestro command
+is running; that command fails with `DeviceUnreachableException`. In a wait loop, use `pgrep -x <name>` or wait on a PID;
+`pgrep -f <pattern>` matches the loop's own shell, and the loop never ends.
 
 Leftovers also pile up after runs that pass. With `--no-reinstall-driver`, the CLI does not stop
 the driver's `xcodebuild` process when it exits (`LocalXCTestInstaller`: `uninstall()` returns
 early when the driver is not reinstalled), and a `simctl diagnose` was seen next to most of them.
-An agent that calls `maestro test` or `maestro hierarchy` many times collects one pair per call,
-all on the same simulator. Count them after every few calls, and end
-only the ones for your simulator's UDID while no Maestro command is in flight:
-`pkill -f "test-without-building.*-destination id=<udid>"` and `pkill -f "simctl diagnose.*--udid=<udid>"`.
-At the end of a run, shut the simulator down and end whatever is left.
+An agent that calls `maestro test` with the flag many times collects one pair per call, all on
+the same simulator. Count them after every few calls. While no Maestro command is running, end
+all of them for your simulator's UDID; the next command starts a driver of its own. The
+`simctl diagnose` command line carries no UDID, so find it through its parent `xcodebuild`.
+The bracket in each pattern keeps it from matching the shell that runs it:
 
-**Name the simulator for its job.** `xcodebuild -destination 'name=iPhone 18 Pro'` picks the first
+```bash
+for p in $(pgrep -f "[t]est-without-building.*-destination id=<udid>"); do
+  pkill -P "$p" -f "[s]imctl diagnose"
+  kill "$p"
+done
+```
+
+At the end of a run, end whatever is left the same way and shut the simulator down.
+
+**Name the simulator for its job.** `xcodebuild -destination 'name=<device name>'` picks the first
 simulator with that name, so a test lane can land on the device a manual run is using. Give each
 job its own named simulator, or address it by UDID.
 
@@ -272,8 +299,8 @@ its tools arrive as `mcp__maestro__<tool>`.
 **Single simulator rule:** in MCP, the iOS driver port is fixed at 22087 and every Simulator
 session shares it. If a second simulator is booted, `inspect_screen` returns the wrong device's
 tree and taps go to the wrong device, **and the result still looks valid** (upstream issue
-#3611). Keep a single booted simulator while an agent works. In the CLI the default port is the
-same; parallel runs make Maestro pick different ports.
+#3611). Keep a single booted simulator while an agent works. In the CLI, `maestro hierarchy` uses the
+same fixed port, while `maestro test` picks a free port on every run.
 
 ## Commands that send data out
 
