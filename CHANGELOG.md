@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-04
+
 ### Added
 - `skills/driving-apps-with-maestro`: rules for driving a mobile app with Maestro on a
   simulator; reading the screen tree, selector semantics (including a `$` in an `id`),
