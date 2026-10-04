@@ -71,6 +71,17 @@ behavior.
 Source: Cognition, "Multi-Agents: What's Actually Working" (parallel writers still
 fail). Borrowed evidence; the rule is the owner's decision.
 
+## The reviewer starts clean
+A reviewer is never the writer. It starts from a fresh context, never a resumed one,
+with the diff and the acceptance criteria, not the author's rationale.
+
+Scenario this prevents: a reviewer that read the author's reasoning, or remembers its
+own earlier verdict, approves the same mistake the author made.
+
+Source: Cognition, "Multi-Agents: What's Actually Working" (review works best when the
+coding and review agents share no context). Borrowed evidence; the rule is the owner's
+decision.
+
 ## An agent file is earned, not planned
 A custom agent definition is written after the same delegation has been dispatched by
 hand three times. Speculative agents die unused; the ones that survive absorb noise a

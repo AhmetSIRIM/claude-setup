@@ -7,6 +7,8 @@
   stop condition, and a return ends with one of four statuses.
 - `rules/subagents.md`, "One writer per scope": parallel work is split into separate
   scopes, never two writers on one.
+- `rules/subagents.md`, "The reviewer starts clean": a reviewer starts fresh from the
+  diff and the acceptance criteria, never from the author's rationale.
 
 ### Changed
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
