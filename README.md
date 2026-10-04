@@ -46,10 +46,6 @@ choices between files.
     `~/.claude/rules/` without the external-import approval a project-level symlink
     needs, and `paths:` scoping keeps working through it. The one place it does not
     load is a Cowork session on the desktop, which skips a symlinked `~/.claude/rules/`.
-- **Agent teams considered and held.** The feature is experimental, and its cost grows
-  linearly by design: the orchestrator and every teammate each carry a full context.
-  One orchestrator with subagents and opencode delegates covers the same need today;
-  the hold ends when the docs drop the experimental label.
 - **Where each kind of content goes.**
   - A rule goes into this repo only when it applies in every project. If even one
     project would not want it, it goes into that project's own `CLAUDE.md` instead;
@@ -92,7 +88,8 @@ choices between files.
     request to review.
 - **No secrets in the repo.**
   - `settings.template.json` shows the env pattern with one self-describing example
-    key; real keys and values live only in the local `settings.json`.
+    key next to the non-secret flags the setup turns on; real keys and values live
+    only in the local `settings.json`.
   - Accepted cost: a new machine fills the env block by hand. Nothing in the repo can
     do it, and repository secrets could not either; they are readable only inside a
     workflow.

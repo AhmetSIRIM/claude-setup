@@ -34,8 +34,17 @@
   by finding.
 - `rules/subagents.md`: drops the pointer to the opencode-delegate skill; the rules
   stand on their own and name no skill.
+- `settings.template.json`: switches agent teams on in user settings with
+  `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+
+### Removed
+- README, "Agent teams considered and held": work across several repositories needs
+  more than one session's subagents, and the experimental label and the cost are
+  accepted, so agent teams are now in use under `rules/agent-teams.md`.
 
 ### Hand steps
+- Add `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"` to the `env` block of
+  `~/.claude/settings.json` on every machine, then restart open sessions.
 - Run `go install ./cmd/announce-git-mode` on every machine, so the hook stops treating
   bypass as an autonomous run.
 
