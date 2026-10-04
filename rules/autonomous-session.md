@@ -9,7 +9,9 @@ question nobody can answer becomes a decision and a line in the final report. Th
 owner is the person the other rules call the user.
 
 When the owner declares a run, the session says before they leave which steps will wait
-for them (PR create, merge, release).
+for them (PR create, merge, release) and asks once whether this run may spawn a
+teammate or start a session outside an approved team plan, or with no plan at all; an
+unanswered question keeps that gate closed.
 
 This section overrides every ask in the other rules. Wherever a rule says to wait for
 the owner (a git mode default, a memory write proposal, an implementation plan approval,
@@ -18,9 +20,14 @@ repeat the exception. A new rule that adds an ask does not need to mention this 
 the override already covers it.
 
 - Git mode starts as `free`: commits and pushes go without asking. The owner still
-  switches it by naming `ask` or `plan`.
+  switches it by naming `ask` or `plan`. The owner's approval of an autonomous team
+  plan declares the run for every teammate in that plan, so a teammate's git mode
+  starts as `free` too.
 - PR create, merge, and release are neither done nor asked. The work is verified and
   left ready, and the final report says which of them wait for a yes.
+- Unless the owner opened it when declaring the run, spawning a teammate or starting a
+  session outside an approved team plan, or with no plan at all, is neither done nor
+  asked. The final report names it and the work that waits for it.
 - A memory write is not proposed in chat; the proposal goes into the final report.
 - Missing information does not stop the work: the assumption is marked in place with
   `// TODO (Assumption): ...` and listed in the report.
@@ -45,12 +52,15 @@ them with `/add-dir` before leaving.
 
 Why: the owner's word is their declaration of trust for one run. A commit ask after it
 is a checkpoint nobody will answer, and a blocked run wastes the time it was given.
-The gates that stay closed (PR, merge, release) are the outward-facing or
-trust-widening steps whose undo needs the owner. Auto mode is the starting permission
-mode, so the mode cannot tell an attended session from an unattended one; only the
-owner's word can. Its classifier also turns several of these rules' prohibitions into
-blocks the harness enforces, a floor under the prompt rules.
+The gates that stay closed (PR, merge, release, a teammate or session outside the
+approved team plan) are the outward-facing or trust-widening steps whose undo needs the
+owner. Auto mode is the starting permission mode, so the mode cannot tell an attended
+session from an unattended one; only the owner's word can. Its classifier also turns
+several of these rules' prohibitions into blocks the harness enforces, a floor under the
+prompt rules.
 
 Source: Claude Code docs, "Choose a permission mode" (auto mode as the built-in starting
-mode, what the classifier blocks, the repeated-block fallback). The behavior list is the
-owner's decision.
+mode, what the classifier blocks, the repeated-block fallback); "Orchestrate teams of
+Claude Code sessions", Messages between agents, and "Cross-session messaging", How a
+session treats an incoming message (a message from another agent is never consent).
+The behavior list is the owner's decision.

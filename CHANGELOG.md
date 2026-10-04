@@ -23,7 +23,12 @@
   permission mode, and runs in auto mode, whose classifier blocks actions beyond the
   request; the session names the steps that will wait for the owner before they leave
   and the directories the run will need, asks for the mode when no hook line is left in
-  context, and the setup no longer uses `bypassPermissions`.
+  context, and the setup no longer uses `bypassPermissions`. Spawning a teammate or
+  starting a session outside an approved team plan, or with no plan, is a closed gate
+  in an autonomous run, reported instead of done, unless the owner opens it when
+  declaring the run; the session asks once, and an unanswered question keeps it
+  closed. The owner's approval of an autonomous team plan declares the run, and git
+  mode `free`, for every teammate in it.
 - `cmd/announce-git-mode`: names the permission mode and git mode ask in every mode and
   points at the autonomous rule, where git mode is `free`; no mode makes a session
   autonomous.
