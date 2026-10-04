@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- `rules/subagents.md`, "A dispatch says where it stops": every dispatch names its
+  stop condition, and a return ends with one of four statuses.
+
 ### Changed
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
   reader with no context, and a return from another model family is weighed finding
