@@ -12,6 +12,11 @@
 - `rules/subagents.md`, "The model is named by role": every dispatch names its model
   (`haiku`, `sonnet`, `opus`, or `fable`, each with its role), and the verifying role
   never runs on a weaker tier than the work it judges.
+- `rules/agent-teams.md`: rules for a Claude Code agent team; agent teams are on in
+  user settings, a lead for several repositories works best opened in the folder that
+  holds them, a delegation outside the approved teammates carries no `name`, the owner
+  approves the teammates before any spawn, a teammate is named `<scope>.<job>`, and
+  each teammate writes one repository.
 
 ### Changed
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
