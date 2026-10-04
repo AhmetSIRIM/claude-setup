@@ -19,11 +19,25 @@
   each teammate writes one repository.
 
 ### Changed
+- `rules/autonomous-session.md`: an autonomous run starts on the owner's word, not on a
+  permission mode, and runs in auto mode, whose classifier blocks actions beyond the
+  request; the session names the steps that will wait for the owner before they leave
+  and the directories the run will need, asks for the mode when no hook line is left in
+  context, and the setup no longer uses `bypassPermissions`.
+- `cmd/announce-git-mode`: names the permission mode and git mode ask in every mode and
+  points at the autonomous rule, where git mode is `free`; no mode makes a session
+  autonomous.
+- README, "A session that runs on its own": replaces the section on starting a session
+  without permission checks.
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
   reader with no context, and a return from another model family is weighed finding
   by finding.
 - `rules/subagents.md`: drops the pointer to the opencode-delegate skill; the rules
   stand on their own and name no skill.
+
+### Hand steps
+- Run `go install ./cmd/announce-git-mode` on every machine, so the hook stops treating
+  bypass as an autonomous run.
 
 ## [0.4.0] - 2026-10-04
 

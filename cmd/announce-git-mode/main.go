@@ -3,12 +3,10 @@
 //
 // It reads the hook input from stdin and prints one line that Claude Code adds to
 // the session context. The line is printed when a session's permission mode is
-// first seen and again whenever it changes, so a switch into bypass permissions
-// during the session is announced on the next prompt. A session in
-// bypassPermissions mode is an autonomous run: the line says so, points at the
-// rule that defines it, and names git mode free. Every other mode gets git mode
-// ask. The same line is the user's warning, shown wherever the transcript shows
-// hook output.
+// first seen and again whenever it changes. It names the permission mode and git
+// mode ask, and points at the autonomous-session rule: a permission mode never
+// makes a session autonomous, only the owner's word does, so the hook gives no mode
+// special treatment.
 //
 // The prompt hook is used because its input carries permission_mode; the
 // SessionStart input does not. The last announced mode is kept per session in a
@@ -23,8 +21,6 @@ import (
 	"os"
 	"path/filepath"
 )
-
-const bypassPermissionsMode = "bypassPermissions"
 
 type hookInput struct {
 	SessionID      string `json:"session_id"`
@@ -70,24 +66,19 @@ func announcement(previousMode string, seenBefore bool, currentMode string) (lin
 	if seenBefore && previousMode == currentMode {
 		return "", false
 	}
-	switch currentMode {
-	case bypassPermissionsMode:
-		line = "Autonomous session: bypass permissions is on, so no rule waits for the " +
-			"user; every ask becomes a decision and a line in the final report. See " +
-			"~/.claude/rules/autonomous-session.md. Git mode: free. Say 'ask' or 'plan' " +
-			"to switch for this session."
-	case "":
-		line = "Git mode: ask (default; the hook input carried no permission mode). Say " +
-			"'plan' or 'free' to switch for this session; see ~/.claude/rules/git.md for " +
-			"what each mode covers."
-	default:
-		line = "Git mode: ask (default). Say 'plan' or 'free' to switch for this session; " +
-			"see ~/.claude/rules/git.md for what each mode covers."
+	const gitModeAsk = "Say 'plan' or 'free' to switch for this session; see " +
+		"~/.claude/rules/git.md for what each mode covers. An autonomous run starts only " +
+		"when the owner says the session should go on without them, and git mode is " +
+		"then free; see " +
+		"~/.claude/rules/autonomous-session.md."
+	if currentMode == "" {
+		return "Git mode: ask (default; the hook input carried no permission mode). " + gitModeAsk, true
 	}
+	line = "Git mode: ask (default). " + gitModeAsk
 	if seenBefore {
-		line = fmt.Sprintf("Permission mode is now %q. ", currentMode) + line
+		return fmt.Sprintf("Permission mode is now %q. ", currentMode) + line, true
 	}
-	return line, true
+	return fmt.Sprintf("Permission mode: %q. ", currentMode) + line, true
 }
 
 // readState returns the mode last announced for the session, and whether one was
