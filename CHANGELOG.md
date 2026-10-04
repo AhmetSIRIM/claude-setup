@@ -9,6 +9,9 @@
   scopes, never two writers on one.
 - `rules/subagents.md`, "The reviewer starts clean": a reviewer starts fresh from the
   diff and the acceptance criteria, never from the author's rationale.
+- `rules/subagents.md`, "The model is named by role": every dispatch names its model
+  (`haiku`, `sonnet`, `opus`, or `fable`, each with its role), and the verifying role
+  never runs on a weaker tier than the work it judges.
 
 ### Changed
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a

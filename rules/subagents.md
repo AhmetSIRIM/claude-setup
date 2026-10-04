@@ -82,6 +82,23 @@ Source: Cognition, "Multi-Agents: What's Actually Working" (review works best wh
 coding and review agents share no context). Borrowed evidence; the rule is the owner's
 decision.
 
+## The model is named by role
+Every dispatch names its model by role: `haiku` for simple bulk work that needs no
+judgment (listing, summarizing search output); `sonnet` for discovery and well-defined
+mechanical work; `opus` as the default for verification, review, synthesis, and
+open-ended design; `fable` for the hardest judgments, chosen on purpose because it
+costs the most. The role that verifies or decides never runs on a weaker tier than the
+work it judges.
+
+Scenario this prevents: an unnamed model inherits the session's model, usually its
+most expensive tier, on every dispatch, or a cheaper reviewer waves through work it
+cannot judge.
+
+Source: obra/superpowers release notes, v6.0.0 (an unnamed model inherits the session's
+most expensive one); Cognition, "Multi-Agents: What's Actually Working" (a weaker
+model does not know when to escalate). Borrowed evidence; the rule is the owner's
+decision.
+
 ## An agent file is earned, not planned
 A custom agent definition is written after the same delegation has been dispatched by
 hand three times. Speculative agents die unused; the ones that survive absorb noise a
