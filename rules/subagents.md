@@ -60,6 +60,17 @@ repetition and unawareness of termination conditions among the most common failu
 The four statuses follow the obra/superpowers project. Borrowed evidence and
 vocabulary; the rule is the owner's decision.
 
+## One writer per scope
+One scope (a repository, a file, a decision log) has one writer at a time. Parallel
+work is split into separate scopes; it never puts two writers on one.
+
+Scenario this prevents: two delegates edit the same code with conflicting implicit
+choices (style, edge cases) that still compile, and the conflict surfaces only in
+behavior.
+
+Source: Cognition, "Multi-Agents: What's Actually Working" (parallel writers still
+fail). Borrowed evidence; the rule is the owner's decision.
+
 ## An agent file is earned, not planned
 A custom agent definition is written after the same delegation has been dispatched by
 hand three times. Speculative agents die unused; the ones that survive absorb noise a

@@ -5,6 +5,8 @@
 ### Added
 - `rules/subagents.md`, "A dispatch says where it stops": every dispatch names its
   stop condition, and a return ends with one of four statuses.
+- `rules/subagents.md`, "One writer per scope": parallel work is split into separate
+  scopes, never two writers on one.
 
 ### Changed
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
