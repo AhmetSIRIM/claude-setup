@@ -41,6 +41,9 @@
   stand on their own and name no skill.
 - `settings.template.json`: switches agent teams on in user settings with
   `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+- Weekly drift check: reads `skills/*/SKILL.md` along with the rules, hooks, and
+  settings template, and fetches the agent teams, permission modes, auto mode, costs,
+  and cross-session messaging pages, read whole.
 
 ### Removed
 - README, "Agent teams considered and held": work across several repositories needs

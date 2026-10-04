@@ -32,6 +32,7 @@ def version_key(v: str):
 setup = [f"### CLAUDE.template.md\n{read(ROOT / 'CLAUDE.template.md')}"]
 setup += [f"### rules/{p.name}\n{read(p)}" for p in sorted((ROOT / "rules").glob("*.md"))]
 setup += [f"### hooks/{p.name}\n{read(p)}" for p in sorted((ROOT / "hooks").glob("*.sh"))]
+setup += [f"### skills/{p.parent.name}/SKILL.md\n{read(p)}" for p in sorted((ROOT / "skills").glob("*/SKILL.md"))]
 setup.append(f"### settings.template.json\n{read(ROOT / 'settings.template.json')}")
 setup.append(f"### README.md\n{read(ROOT / 'README.md')}")
 setup_text = "\n\n".join(setup)
@@ -67,8 +68,10 @@ news_text = "\n\n".join(new_sections)[:35_000]
 
 # --- docs for the breakage check ---
 docs = "\n\n".join(
-    f"### {name}\n{read(TMP / name)}"
-    for name in ("llms.txt", "memory.md", "hooks.md")
+    f"### {name}\n{(TMP / name).read_text(encoding='utf-8', errors='replace')}"
+    for name in ("llms.txt", "memory.md", "hooks.md", "agent-teams.md",
+                 "permission-modes.md", "auto-mode-config.md", "costs.md",
+                 "cross-session-messaging.md")
     if (TMP / name).exists()
 )
 

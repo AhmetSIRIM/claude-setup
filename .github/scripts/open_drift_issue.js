@@ -15,7 +15,7 @@ module.exports = async ({ github, context, core }) => {
     answer = answer.slice(0, LIMIT) + '\n\n*(truncated: the answer exceeded the length budget)*';
   }
   const model = process.env.OPENCODE_MODEL;
-  const body = `Automated weekly comparison of this setup against the current Claude Code docs (\`${model}\` via opencode).\n\n${answer}\n\nSources fetched: \`code.claude.com/docs/llms.txt\`, \`/docs/en/memory\`, \`/docs/en/hooks\`.`;
+  const body = `Automated weekly comparison of this setup against the current Claude Code docs (\`${model}\` via opencode).\n\n${answer}\n\nSources fetched: \`code.claude.com/docs/llms.txt\`, \`/docs/en/memory\`, \`/docs/en/hooks\`, \`/docs/en/agent-teams\`, \`/docs/en/permission-modes\`, \`/docs/en/auto-mode-config\`, \`/docs/en/costs\`, \`/docs/en/cross-session-messaging\`.`;
   const date = new Date().toISOString().slice(0, 10);
   const latest = process.env.LATEST_VERSION || 'unknown';
   const issue = await github.rest.issues.create({
