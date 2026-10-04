@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+- `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
+  reader with no context, and a return from another model family is weighed finding
+  by finding.
+
 ## [0.4.0] - 2026-10-04
 
 ### Added
