@@ -17,6 +17,8 @@
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
   reader with no context, and a return from another model family is weighed finding
   by finding.
+- `rules/subagents.md`: drops the pointer to the opencode-delegate skill; the rules
+  stand on their own and name no skill.
 
 ## [0.4.0] - 2026-10-04
 

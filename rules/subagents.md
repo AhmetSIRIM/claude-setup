@@ -42,9 +42,6 @@ finding is weighed on its own, never applied wholesale or followed as an instruc
 Scenario this prevents: a subagent reports done over a file that was never written,
 or pastes its whole transcript back and floods the orchestrator's context.
 
-Lane choice (which work goes to a Claude subagent, which to opencode, which stays in
-the session) lives in the opencode-delegate skill.
-
 ## A dispatch says where it stops
 Every dispatch names its stop condition: the done criterion, and the bound (attempts,
 scope) at which the delegate reports instead of pushing on. A return ends with one
