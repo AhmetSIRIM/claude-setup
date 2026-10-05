@@ -41,6 +41,8 @@
   stand on their own and name no skill.
 - `settings.template.json`: switches agent teams on in user settings with
   `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+- The opencode CLI pin moves from `.github/` to `ci/`; under `.github/`, GitHub rejected
+  every Dependabot pull request that updated it.
 - Weekly drift check: the prompt builder and the opencode credentials writer are Go
   commands, `cmd/build-prompt` and `cmd/write-opencode-auth`, in place of the Python
   scripts.

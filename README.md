@@ -22,6 +22,7 @@ identical across machines.
 | `rules/*.md` | symlinked as `~/.claude/rules/`; `kotlin.md` carries `paths:` scoping |
 | `skills/*/SKILL.md` | symlinked as `~/.claude/skills/` |
 | `hooks/*.sh` | symlinked as `~/.claude/hooks/`; wired via `hooks` in settings |
+| `ci/` | opencode CLI pin for the weekly digest; the workflow runs `npm ci --prefix ci` |
 | `tools/` | `npm ci --prefix tools`; `statusLine` in settings runs ccstatusline from here with `tools/ccstatusline.json` |
 | `settings.template.json` | copy to `~/.claude/settings.json`, fill `env` |
 | `.github/workflows/doc-drift-check.yml` | weekly digest + breakage issue, assigned to the owner |
@@ -178,5 +179,5 @@ the run go on after a block (see the
   `OPENCODE_GO_KEY` must exist as a repository secret: an API key from the OpenCode
   console. One key serves both the Zen and the Go provider; the workflow registers it
   under `opencode-go` only.
-- The CLI version is pinned in `.github/package.json` and the workflow actions to
+- The CLI version is pinned in `ci/package.json` and the workflow actions to
   commit SHAs; Dependabot updates both weekly and watches `go.mod` and `tools/`.
