@@ -17,6 +17,8 @@
   holds them, a delegation outside the approved teammates carries no `name`, the owner
   approves the teammates before any spawn, a teammate is named `<scope>.<job>`, and
   each teammate writes one repository.
+- `settings.template.json`: enables the `frontend-design` plugin, which guides the
+  visual design of new or reshaped web UI.
 
 ### Changed
 - `rules/autonomous-session.md`: an autonomous run starts on the owner's word, not on a
@@ -67,6 +69,7 @@
   accepted, so agent teams are now in use under `rules/agent-teams.md`.
 
 ### Hand steps
+- Run `/plugin install frontend-design@claude-plugins-official` on every machine.
 - In `~/.claude/settings.json` on every machine, set `remoteControlAtStartup` to
   `false` and `inputNeededNotifEnabled` and `agentPushNotifEnabled` to `true`. In the
   Desktop app, check that Settings > Claude Code > Connect new sessions to Remote

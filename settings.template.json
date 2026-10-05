@@ -20,7 +20,8 @@
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "jdtls-lsp@claude-plugins-official": true,
-    "session-report@claude-plugins-official": true
+    "session-report@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "outputStyle": "concise",
   "language": "tr",
