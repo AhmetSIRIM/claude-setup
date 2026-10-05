@@ -40,7 +40,10 @@ const (
 )
 
 var (
-	docNames = []string{
+	// The hook commands settings.template.json wires, read for the Claude Code
+	// mechanisms they rely on (hook input fields, config file locations).
+	hookSources = []string{"cmd/announce-git-mode/main.go", "cmd/session-start-doctor/main.go"}
+	docNames    = []string{
 		"llms.txt", "memory.md", "hooks.md", "agent-teams.md",
 		"permission-modes.md", "auto-mode-config.md", "costs.md", "cross-session-messaging.md",
 	}
@@ -110,21 +113,15 @@ func buildPrompt(rootDir, tmpDir string) (prompt, digestMeta string, err error) 
 // readSetup returns the setup files under review, each under a "### <path>" heading and
 // cut at [setupFileCap] runes.
 func readSetup(rootDir string) (string, error) {
-	var setupPaths []string
-	setupPaths = append(setupPaths, "CLAUDE.template.md")
-	for _, pattern := range []string{"rules/*.md", "hooks/*.sh"} {
-		matches, err := filepath.Glob(filepath.Join(rootDir, pattern))
-		if err != nil {
-			return "", err
-		}
-		for _, match := range matches {
-			relativePath, err := filepath.Rel(rootDir, match)
-			if err != nil {
-				return "", err
-			}
-			setupPaths = append(setupPaths, filepath.ToSlash(relativePath))
-		}
+	setupPaths := []string{"CLAUDE.template.md"}
+	rulePaths, err := filepath.Glob(filepath.Join(rootDir, "rules", "*.md"))
+	if err != nil {
+		return "", err
 	}
+	for _, rulePath := range rulePaths {
+		setupPaths = append(setupPaths, "rules/"+filepath.Base(rulePath))
+	}
+	setupPaths = append(setupPaths, hookSources...)
 	skillPaths, err := filepath.Glob(filepath.Join(rootDir, "skills", "*", "SKILL.md"))
 	if err != nil {
 		return "", err

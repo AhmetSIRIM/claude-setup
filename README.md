@@ -21,7 +21,6 @@ identical across machines.
 | `CLAUDE.template.md` | copy to `~/.claude/CLAUDE.md`, fill; stays local |
 | `rules/*.md` | symlinked as `~/.claude/rules/`; `kotlin.md` carries `paths:` scoping |
 | `skills/*/SKILL.md` | symlinked as `~/.claude/skills/` |
-| `hooks/*.sh` | symlinked as `~/.claude/hooks/`; wired via `hooks` in settings |
 | `ci/` | opencode CLI pin for the weekly digest; the workflow runs `npm ci --prefix ci` |
 | `tools/` | `npm ci --prefix tools`; `statusLine` in settings runs ccstatusline from here with `tools/ccstatusline.json` |
 | `settings.template.json` | copy to `~/.claude/settings.json`, fill `env` |
@@ -104,7 +103,7 @@ choices between files.
    ```
 2. Link the always-loaded pieces:
    ```bash
-   for i in rules skills hooks; do ln -sfn "$PWD/$i" ~/.claude/$i; done
+   for i in rules skills; do ln -sfn "$PWD/$i" ~/.claude/$i; done
    ```
 3. Copy the personal-instructions template and fill it in; it stays local:
    ```bash
@@ -117,14 +116,14 @@ choices between files.
    The status line command names the clone at `$HOME/Projects/oss/claude-setup`; a
    clone anywhere else means editing that path in the copied settings.
 5. Tools the setup leans on (`node` runs the status line, `gitleaks` guards pushes,
-   `go` builds the hook that names the git mode), then the pinned status line and the
-   hook binary:
+   `go` builds the hook binaries), then the pinned status line and the hook
+   binaries:
    ```bash
    brew install node gitleaks go
    ```
    ```bash
    npm ci --prefix tools
-   go install ./cmd/announce-git-mode
+   go install ./cmd/announce-git-mode ./cmd/session-start-doctor
    ```
    Then create `.git/hooks/pre-push` (chmod +x) so outgoing commits are scanned
    before they reach the remote; fall back to a full scan while `origin/main` does

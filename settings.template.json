@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/session-start-doctor.sh"
+            "command": "~/go/bin/session-start-doctor"
           }
         ]
       }

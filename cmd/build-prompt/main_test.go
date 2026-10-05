@@ -54,7 +54,8 @@ func TestBuildPrompt(t *testing.T) {
 	writeFile(t, rootDir, "CLAUDE.template.md", "template")
 	writeFile(t, rootDir, "rules/b.md", "rule b")
 	writeFile(t, rootDir, "rules/a.md", strings.Repeat("ü", setupFileCap+5))
-	writeFile(t, rootDir, "hooks/doctor.sh", "hook")
+	writeFile(t, rootDir, "cmd/announce-git-mode/main.go", "hook a")
+	writeFile(t, rootDir, "cmd/session-start-doctor/main.go", "hook b")
 	writeFile(t, rootDir, "skills/a-b/SKILL.md", "skill a-b")
 	writeFile(t, rootDir, "skills/a/SKILL.md", "skill a")
 	writeFile(t, rootDir, "settings.template.json", "{}")
@@ -88,7 +89,7 @@ func TestBuildPrompt(t *testing.T) {
 	if strings.Contains(prompt, "## 2.1.1\n\n- old") {
 		t.Error("prompt carries a section the last digest already covered")
 	}
-	order := []string{"### CLAUDE.template.md", "### rules/a.md", "### rules/b.md", "### hooks/doctor.sh", "### skills/a/SKILL.md", "### skills/a-b/SKILL.md", "### settings.template.json", "### README.md"}
+	order := []string{"### CLAUDE.template.md", "### rules/a.md", "### rules/b.md", "### cmd/announce-git-mode/main.go", "### cmd/session-start-doctor/main.go", "### skills/a/SKILL.md", "### skills/a-b/SKILL.md", "### settings.template.json", "### README.md"}
 	lastIndex := -1
 	for _, heading := range order {
 		index := strings.Index(prompt, heading)
@@ -101,7 +102,7 @@ func TestBuildPrompt(t *testing.T) {
 
 func TestBuildPromptWithoutPriorOrReleases(t *testing.T) {
 	rootDir := t.TempDir()
-	for _, name := range []string{"CLAUDE.template.md", "settings.template.json", "README.md"} {
+	for _, name := range []string{"CLAUDE.template.md", "cmd/announce-git-mode/main.go", "cmd/session-start-doctor/main.go", "settings.template.json", "README.md"} {
 		writeFile(t, rootDir, name, name)
 	}
 

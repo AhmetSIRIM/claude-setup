@@ -41,6 +41,9 @@
   stand on their own and name no skill.
 - `settings.template.json`: switches agent teams on in user settings with
   `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+- The session-start health check is a Go command, `cmd/session-start-doctor`, in place
+  of `hooks/session-start-doctor.sh`; it no longer needs `python3`, and the weekly
+  drift check reads the Go sources of both hooks.
 - The opencode CLI pin moves from `.github/` to `ci/`; under `.github/`, GitHub rejected
   every Dependabot pull request that updated it.
 - Weekly drift check: the prompt builder and the opencode credentials writer are Go
@@ -51,11 +54,17 @@
   and cross-session messaging pages, read whole.
 
 ### Removed
+- `hooks/`: the last hook script is a Go command, so the README layout and link step no
+  longer include `~/.claude/hooks`.
 - README, "Agent teams considered and held": work across several repositories needs
   more than one session's subagents, and the experimental label and the cost are
   accepted, so agent teams are now in use under `rules/agent-teams.md`.
 
 ### Hand steps
+- Run `go install ./cmd/session-start-doctor` on every machine, point the SessionStart
+  hook in `~/.claude/settings.json` at `~/go/bin/session-start-doctor`, and remove the
+  `~/.claude/hooks` symlink. Until then, every session start shows a SessionStart hook
+  error for the old script path.
 - Add `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"` to the `env` block of
   `~/.claude/settings.json` on every machine, then restart open sessions.
 - Run `go install ./cmd/announce-git-mode` on every machine, so the hook stops treating
