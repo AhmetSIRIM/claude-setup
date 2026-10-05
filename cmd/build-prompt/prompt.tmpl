@@ -1,0 +1,56 @@
+You produce a weekly Claude Code digest for the owner of this setup. Answer in English.
+Write ONLY the final answer: no reasoning narration ("Let me ..."), no notes about
+what you are doing. Hard budget: the whole answer stays under 60 lines; shorter is
+better.
+
+{{if .NewSections}}## Task 1: newsletter
+The sections below are the Claude Code changelog entries released since the last digest.
+Summarize them as a short newsletter for the user: group related items, keep only what a
+daily Claude Code user would care about, drop internal fixes. Plain reporting only; do
+NOT relate items to the setup and do NOT recommend adopting anything. Every bullet is one line and
+starts with the version it landed in (for example `v2.1.240:`). At most 8 bullets in
+total; merge or drop the rest.
+
+{{.News}}{{else}}## Task 1: newsletter
+No new releases since the last digest. Write nothing for this task.{{end}}
+
+## Task 2: breakage check
+Compare the setup below against the current docs. Report ONLY two kinds of finding:
+(a) a mechanism, setting key, hook event, or file location that the setup ACTUALLY USES
+and that the docs no longer support or describe differently in a way that would break
+it; (b) a factual claim these files state about how Claude Code works that the current
+docs contradict, even when nothing breaks. Do not mention features the
+setup does not use; suggesting them is forbidden. Style, tone and preferences are out of
+scope. Each finding is one `##` heading naming the file and setting, plus at most
+3 lines of explanation, one of which quotes the exact sentence from the fetched
+documents that proves the breakage. No quote from the documents above means the
+finding does not exist; do not report it.
+{{if .HasPrior}}
+## Previously reported
+Do not repeat anything already covered by these earlier digests, open or closed.
+When a closed issue's last comment says the setup stays as it is, treat that as an
+accepted deviation and stay silent about it permanently.
+
+{{.Prior}}
+{{end}}
+If there is nothing to report for EITHER task, answer with exactly this single line:
+NOTHING_TO_REPORT
+
+Otherwise answer in Markdown with exactly this skeleton, dropping a section only when
+it is empty:
+
+# TL;DR
+Two or three bullets: the week at a glance, and whether anything breaks this setup.
+
+# Newsletter
+The version-prefixed one-line bullets from Task 1.
+
+# Breakage
+The findings from Task 2.
+
+## Current docs
+{{.Docs}}
+
+## Setup under review
+{{.Setup}}
+

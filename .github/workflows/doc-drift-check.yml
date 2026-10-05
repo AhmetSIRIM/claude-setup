@@ -58,6 +58,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: false   # no module dependencies, nothing to cache
+
       - name: Install opencode
         run: .github/scripts/install_opencode.sh
 
@@ -66,7 +71,7 @@ jobs:
           OPENCODE_GO_KEY: ${{ secrets.OPENCODE_GO_KEY }}
         run: |
           set -euo pipefail
-          python3 .github/scripts/write_opencode_auth.py
+          go run ./cmd/write-opencode-auth
           opencode auth list
 
       - name: Collect prior drift findings
@@ -82,7 +87,7 @@ jobs:
       - name: Build the review prompt
         if: steps.prior.outputs.skip != 'true'
         run: |
-          python3 .github/scripts/build_prompt.py > /tmp/prompt.txt
+          go run ./cmd/build-prompt > /tmp/prompt.txt
           wc -c /tmp/prompt.txt; cat /tmp/digest-meta.env
 
       - name: Ask the model
