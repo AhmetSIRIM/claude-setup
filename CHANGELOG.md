@@ -57,7 +57,7 @@
   scripts.
 - Weekly drift check: reads `skills/*/SKILL.md` along with the rules, hooks, and
   settings template, and fetches the agent teams, permission modes, auto mode, costs,
-  and cross-session messaging pages, read whole.
+  cross-session messaging, and Remote Control pages, read whole.
 
 ### Removed
 - `hooks/`: the last hook script is a Go command, so the README layout and link step no

@@ -46,6 +46,7 @@ var (
 	docNames    = []string{
 		"llms.txt", "memory.md", "hooks.md", "agent-teams.md",
 		"permission-modes.md", "auto-mode-config.md", "costs.md", "cross-session-messaging.md",
+		"remote-control.md",
 	}
 	coveredVersionPattern  = regexp.MustCompile(`through v(\d+\.\d+\.\d+)`)
 	changelogHeadingPrefix = regexp.MustCompile(`(?m)^## `)

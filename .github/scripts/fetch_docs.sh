@@ -16,7 +16,9 @@ curl -fsSL https://code.claude.com/docs/en/costs.md -o /tmp/costs.md || \
 curl -fsSL https://code.claude.com/docs/en/costs -o /tmp/costs.md
 curl -fsSL https://code.claude.com/docs/en/cross-session-messaging.md -o /tmp/cross-session-messaging.md || \
 curl -fsSL https://code.claude.com/docs/en/cross-session-messaging -o /tmp/cross-session-messaging.md
+curl -fsSL https://code.claude.com/docs/en/remote-control.md -o /tmp/remote-control.md || \
+curl -fsSL https://code.claude.com/docs/en/remote-control -o /tmp/remote-control.md
 curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md -o /tmp/changelog.md
 wc -c /tmp/llms.txt /tmp/memory.md /tmp/hooks.md /tmp/agent-teams.md \
   /tmp/permission-modes.md /tmp/auto-mode-config.md /tmp/costs.md \
-  /tmp/cross-session-messaging.md /tmp/changelog.md
+  /tmp/cross-session-messaging.md /tmp/remote-control.md /tmp/changelog.md
