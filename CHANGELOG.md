@@ -3,86 +3,45 @@
 ## [Unreleased]
 
 ### Added
-- `rules/subagents.md`, "A dispatch says where it stops": every dispatch names its
-  stop condition, and a return ends with one of four statuses.
-- `rules/subagents.md`, "One writer per scope": parallel work is split into separate
-  scopes, never two writers on one.
-- `rules/subagents.md`, "The reviewer starts clean": a reviewer starts fresh from the
-  diff and the acceptance criteria, never from the author's rationale.
-- `rules/subagents.md`, "The model is named by role": every dispatch names its model
-  (`haiku`, `sonnet`, `opus`, or `fable`, each with its role), and the verifying role
-  never runs on a weaker tier than the work it judges.
-- `rules/agent-teams.md`: rules for a Claude Code agent team; agent teams are on in
-  user settings, a lead for several repositories works best opened in the folder that
-  holds them, a delegation outside the approved teammates carries no `name`, the owner
-  approves the teammates before any spawn, a teammate is named `<scope>.<job>`, and
-  each teammate writes one repository.
-- `settings.template.json`: enables the `frontend-design` plugin, which guides the
-  visual design of new or reshaped web UI.
+- `rules/subagents.md`: "A dispatch says where it stops", "One writer per scope", "The
+  reviewer starts clean", and "The model is named by role".
+- `rules/agent-teams.md`, with agent teams switched on in `settings.template.json` via
+  `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+- `settings.template.json`: the `frontend-design` plugin, for the visual design of web
+  UI.
 
 ### Changed
-- `rules/autonomous-session.md`: an autonomous run starts on the owner's word, not on a
-  permission mode, and runs in auto mode, whose classifier blocks actions beyond the
-  request; the session names the steps that will wait for the owner before they leave
-  and the directories the run will need, asks for the mode when no hook line is left in
-  context, and the setup no longer uses `bypassPermissions`. Spawning a teammate or
-  starting a session outside an approved team plan, or with no plan, is a closed gate
-  in an autonomous run, reported instead of done, unless the owner opens it when
-  declaring the run; the session asks once, and an unanswered question keeps it
-  closed. The owner's approval of an autonomous team plan declares the run, and git
-  mode `free`, for every teammate in it.
-- `cmd/announce-git-mode`: names the permission mode and git mode ask in every mode and
-  points at the autonomous rule, where git mode is `free`; no mode makes a session
-  autonomous.
-- README, "A session that runs on its own": replaces the section on starting a session
-  without permission checks.
+- An autonomous run starts on the owner's word and runs in auto mode; the setup no
+  longer uses `bypassPermissions` (`rules/autonomous-session.md`, `cmd/announce-git-mode`).
 - `rules/subagents.md`: a delegate outside Claude Code gets a prompt written for a
-  reader with no context, and a return from another model family is weighed finding
-  by finding.
-- `rules/subagents.md`: drops the pointer to the opencode-delegate skill; the rules
-  stand on their own and name no skill.
-- `settings.template.json`: switches agent teams on in user settings with
-  `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
-- `settings.template.json`: Remote Control stays off at session start
-  (`remoteControlAtStartup` is `false`, not left unset, because unset follows Claude
-  Code's own default), so a session shows up on other machines and in the Claude apps
-  only after `/remote-control` (`/rc`) runs in it. To reach a session on another
-  machine, run `/rc` in both sessions. While a session is connected, Claude pushes to
-  the phone when it decides to or when the session waits for input.
-- The session-start health check is a Go command, `cmd/session-start-doctor`, in place
-  of `hooks/session-start-doctor.sh`; it no longer needs `python3`, and the weekly
-  drift check reads the Go sources of both hooks.
-- The opencode CLI pin moves from `.github/` to `ci/`; under `.github/`, GitHub rejected
-  every Dependabot pull request that updated it.
-- Weekly drift check: the prompt builder and the opencode credentials writer are Go
-  commands, `cmd/build-prompt` and `cmd/write-opencode-auth`, in place of the Python
-  scripts.
-- Weekly drift check: reads `skills/*/SKILL.md` along with the rules, hooks, and
-  settings template, and fetches the agent teams, permission modes, auto mode, costs,
-  cross-session messaging, and Remote Control pages, read whole.
+  reader with no context, and the rules name no skill.
+- `settings.template.json`: Remote Control stays off at session start; `/rc` connects
+  one session, and a connected session pushes to the phone.
+- `cmd/session-start-doctor`, `cmd/build-prompt`, and `cmd/write-opencode-auth` are Go
+  commands in place of the shell and Python scripts.
+- Weekly drift check: also reads the skills, and fetches the agent teams, permission
+  modes, auto mode, costs, cross-session messaging, and Remote Control pages.
+- The opencode CLI pin moves from `.github/` to `ci/`, where Dependabot can update it.
 
 ### Removed
-- `hooks/`: the last hook script is a Go command, so the README layout and link step no
-  longer include `~/.claude/hooks`.
-- README, "Agent teams considered and held": work across several repositories needs
-  more than one session's subagents, and the experimental label and the cost are
-  accepted, so agent teams are now in use under `rules/agent-teams.md`.
+- `hooks/` and the `~/.claude/hooks` link: every hook is a Go command.
+- README, "Agent teams considered and held".
 
 ### Hand steps
-- Run `/plugin install frontend-design@claude-plugins-official` on every machine.
-- In `~/.claude/settings.json` on every machine, set `remoteControlAtStartup` to
-  `false` and `inputNeededNotifEnabled` and `agentPushNotifEnabled` to `true`. In the
-  Desktop app, check that Settings > Claude Code > Connect new sessions to Remote
-  Control is off. For the pushes, sign in to the Claude mobile app with the same
-  account and allow its notifications.
-- Run `go install ./cmd/session-start-doctor` on every machine, point the SessionStart
-  hook in `~/.claude/settings.json` at `~/go/bin/session-start-doctor`, and remove the
-  `~/.claude/hooks` symlink. Until then, every session start shows a SessionStart hook
-  error for the old script path.
-- Add `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"` to the `env` block of
-  `~/.claude/settings.json` on every machine, then restart open sessions.
-- Run `go install ./cmd/announce-git-mode` on every machine, so the hook stops treating
-  bypass as an autonomous run.
+On every machine, then restart open sessions:
+1. From the clone, run `go install ./cmd/announce-git-mode ./cmd/session-start-doctor`.
+   Until then, every session start shows a SessionStart hook error for the old script
+   path, and the git mode hook still treats bypass as an autonomous run.
+2. In `~/.claude/settings.json`:
+   - point the SessionStart hook at `~/go/bin/session-start-doctor`;
+   - add `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"` to the `env` block;
+   - set `remoteControlAtStartup` to `false`, and `inputNeededNotifEnabled` and
+     `agentPushNotifEnabled` to `true`.
+3. Remove the `~/.claude/hooks` symlink.
+4. Run `/plugin install frontend-design@claude-plugins-official`.
+5. In the Desktop app, check that Settings > Claude Code > Connect new sessions to
+   Remote Control is off. For phone pushes, sign in to the Claude mobile app with the
+   same account and allow its notifications.
 
 ## [0.4.0] - 2026-10-04
 
