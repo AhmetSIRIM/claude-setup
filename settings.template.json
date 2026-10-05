@@ -31,8 +31,9 @@
   },
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
-  "inputNeededNotifEnabled": false,
-  "agentPushNotifEnabled": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true,
+  "remoteControlAtStartup": false,
   "hooks": {
     "SessionStart": [
       {

@@ -41,6 +41,12 @@
   stand on their own and name no skill.
 - `settings.template.json`: switches agent teams on in user settings with
   `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
+- `settings.template.json`: Remote Control stays off at session start
+  (`remoteControlAtStartup` is `false`, not left unset, because unset follows Claude
+  Code's own default), so a session shows up on other machines and in the Claude apps
+  only after `/remote-control` (`/rc`) runs in it. To reach a session on another
+  machine, run `/rc` in both sessions. While a session is connected, Claude pushes to
+  the phone when it decides to or when the session waits for input.
 - The session-start health check is a Go command, `cmd/session-start-doctor`, in place
   of `hooks/session-start-doctor.sh`; it no longer needs `python3`, and the weekly
   drift check reads the Go sources of both hooks.
@@ -61,6 +67,11 @@
   accepted, so agent teams are now in use under `rules/agent-teams.md`.
 
 ### Hand steps
+- In `~/.claude/settings.json` on every machine, set `remoteControlAtStartup` to
+  `false` and `inputNeededNotifEnabled` and `agentPushNotifEnabled` to `true`. In the
+  Desktop app, check that Settings > Claude Code > Connect new sessions to Remote
+  Control is off. For the pushes, sign in to the Claude mobile app with the same
+  account and allow its notifications.
 - Run `go install ./cmd/session-start-doctor` on every machine, point the SessionStart
   hook in `~/.claude/settings.json` at `~/go/bin/session-start-doctor`, and remove the
   `~/.claude/hooks` symlink. Until then, every session start shows a SessionStart hook
