@@ -9,6 +9,8 @@
   `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`.
 - `settings.template.json`: the `frontend-design` plugin, for the visual design of web
   UI.
+- `settings.template.json`: `attribution.sessionUrl` is off, so a web or Remote Control
+  session adds no session link to a commit or a pull request.
 
 ### Changed
 - An autonomous run starts on the owner's word and runs in auto mode; the setup no
